@@ -18,6 +18,10 @@ export functiongraph, curve, implicitcurve, inequality
 export tangent, normal, integral, derivative, riemannsum, slopefield, vectorfield
 export slider, checkbox, input, button, glider, tapemeasure, text, image
 
+# Composition and transformation elements
+export group, transformation, reflection, rotation, translation
+export grid, axis, ticks, legend
+
 # Composition and convenience
 export plot, julia_to_js
 

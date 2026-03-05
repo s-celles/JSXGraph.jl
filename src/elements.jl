@@ -376,3 +376,164 @@ $(SIGNATURES)
 Create an image element from a URL at the given corner with dimensions.
 """
 image(url, corner, dims; kwargs...) = _create_element("image", (url, corner, dims), kwargs)
+
+# --- Composition & Transformation Elements ---
+
+"""
+$(SIGNATURES)
+
+Create a group element that groups several elements together for collective transformations.
+
+`elements` should be a collection of `JSXElement` objects to group.
+
+# Example
+```julia
+p1 = point(0, 0)
+p2 = point(1, 1)
+l = line(p1, p2)
+g = group(p1, p2, l)
+```
+"""
+group(elements...; kwargs...) = _create_element("group", elements, kwargs)
+
+"""
+$(SIGNATURES)
+
+Create a generic transformation element.
+
+`type` is one of `"translate"`, `"scale"`, `"rotate"`, `"reflect"`, `"shear"`, `"generic"`.
+`params` are the transformation parameters (interpretation depends on `type`).
+
+# Example
+```julia
+# Translation by (2, 3)
+t = transformation("translate", 2, 3)
+
+# Rotation by π/4 around the origin
+t = transformation("rotate", π/4)
+
+# Rotation by π/4 around point (1, 1)
+t = transformation("rotate", π/4, 1, 1)
+```
+"""
+function transformation(type::String, params...; kwargs...)
+    _create_element("transformation", (collect(Any, params), type), kwargs)
+end
+
+"""
+$(SIGNATURES)
+
+Create a reflection transformation across the given line element.
+
+# Example
+```julia
+p1 = point(0, 0)
+p2 = point(1, 0)
+l = line(p1, p2)
+r = reflection(l)
+```
+"""
+reflection(line_elem; kwargs...) = _create_element("reflection", (line_elem,), kwargs)
+
+"""
+$(SIGNATURES)
+
+Create a rotation transformation by `angle` (in radians) around a `center` point.
+
+# Example
+```julia
+c = point(0, 0)
+r = rotation(c, π/4)
+```
+"""
+rotation(center, angle; kwargs...) = _create_element("rotation", (center, angle), kwargs)
+
+"""
+$(SIGNATURES)
+
+Create a translation transformation by vector `(dx, dy)`.
+
+# Example
+```julia
+t = translation(2, 3)
+```
+"""
+translation(dx, dy; kwargs...) = _create_element("translation", (dx, dy), kwargs)
+
+"""
+$(SIGNATURES)
+
+Create a grid element on the board.
+
+The grid is a visual overlay of horizontal and vertical lines.
+
+# Example
+```julia
+g = grid()
+g = grid(; face="line", majorStep=[1, 1])
+```
+"""
+grid(; kwargs...) = _create_element("grid", (), kwargs)
+
+"""
+$(SIGNATURES)
+
+Create an axis element defined by two points.
+
+# Example
+```julia
+# Horizontal axis
+ax = axis(point(0, 0), point(1, 0); name="x")
+
+# Vertical axis
+ay = axis(point(0, 0), point(0, 1); name="y")
+```
+"""
+axis(p1, p2; kwargs...) = _create_element("axis", (p1, p2), kwargs)
+
+"""
+$(SIGNATURES)
+
+Create a ticks element on a line or axis.
+
+`line_or_axis` is the parent line/axis element. `tick_distance` is the distance between
+major ticks (optional).
+
+# Example
+```julia
+ax = axis(point(0, 0), point(1, 0))
+t = ticks(ax, 1.0)
+t = ticks(ax, 1.0; minorTicks=4, drawLabels=true)
+```
+"""
+ticks(line_or_axis, tick_distance; kwargs...) = _create_element("ticks", (line_or_axis, tick_distance), kwargs)
+
+"""
+$(SIGNATURES)
+
+Create a ticks element with default tick distance on a line or axis.
+
+# Example
+```julia
+ax = axis(point(0, 0), point(1, 0))
+t = ticks(ax)
+```
+"""
+ticks(line_or_axis; kwargs...) = _create_element("ticks", (line_or_axis,), kwargs)
+
+"""
+$(SIGNATURES)
+
+Create a legend element for the board.
+
+`labels` is a vector of strings, and `elements` is a corresponding vector of elements
+whose appearance styles will label the legend entries.
+
+# Example
+```julia
+fg1 = functiongraph(sin; color="blue")
+fg2 = functiongraph(cos; color="red")
+leg = legend(fg1, fg2; labels=["sin", "cos"])
+```
+"""
+legend(elements...; kwargs...) = _create_element("legend", elements, kwargs)

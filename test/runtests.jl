@@ -569,6 +569,145 @@ using Colors
         @test image("url.png", [0, 0], [1, 1]).type_name == "image"
     end
 
+    @testset "Composition & Transformation Elements" begin
+        p1 = point(0, 0)
+        p2 = point(1, 0)
+        p3 = point(0, 1)
+        l = line(p1, p2)
+        fg = functiongraph(sin)
+
+        # --- group ---
+        g = group(p1, p2, p3)
+        @test g isa JSXElement
+        @test g.type_name == "group"
+        @test length(g.parents) == 3
+        @test g.parents[1] === p1
+        @test g.parents[2] === p2
+        @test g.parents[3] === p3
+
+        # group with attributes
+        g2 = group(p1, p2; color="red")
+        @test g2.attributes["strokeColor"] == "red"
+
+        # --- transformation ---
+        # Translation
+        t = transformation("translate", 2, 3)
+        @test t isa JSXElement
+        @test t.type_name == "transformation"
+        @test t.parents[1] == Any[2, 3]
+        @test t.parents[2] == "translate"
+
+        # Rotation around origin
+        t2 = transformation("rotate", π/4)
+        @test t2.type_name == "transformation"
+        @test t2.parents[1] == Any[π/4]
+        @test t2.parents[2] == "rotate"
+
+        # Rotation around a point
+        t3 = transformation("rotate", π/4, 1, 1)
+        @test t3.type_name == "transformation"
+        @test t3.parents[1] == Any[π/4, 1, 1]
+        @test t3.parents[2] == "rotate"
+
+        # Scale
+        t4 = transformation("scale", 2, 3)
+        @test t4.type_name == "transformation"
+        @test t4.parents[2] == "scale"
+
+        # --- reflection ---
+        r = reflection(l)
+        @test r isa JSXElement
+        @test r.type_name == "reflection"
+        @test r.parents[1] === l
+
+        # reflection with attributes
+        r2 = reflection(l; visible=false)
+        @test r2.attributes["visible"] == false
+
+        # --- rotation ---
+        rot = rotation(p1, π/4)
+        @test rot isa JSXElement
+        @test rot.type_name == "rotation"
+        @test rot.parents[1] === p1
+        @test rot.parents[2] == π/4
+
+        # --- translation ---
+        tr = translation(2, 3)
+        @test tr isa JSXElement
+        @test tr.type_name == "translation"
+        @test tr.parents == Any[2, 3]
+
+        # --- grid ---
+        gr = grid()
+        @test gr isa JSXElement
+        @test gr.type_name == "grid"
+        @test isempty(gr.parents)
+
+        # grid with attributes
+        gr2 = grid(; majorStep=[1, 1])
+        @test gr2.attributes["majorStep"] == [1, 1]
+
+        # --- axis ---
+        ax = axis(p1, p2)
+        @test ax isa JSXElement
+        @test ax.type_name == "axis"
+        @test ax.parents[1] === p1
+        @test ax.parents[2] === p2
+
+        # axis with attributes
+        ax2 = axis(p1, p2; name="x")
+        @test ax2.attributes["name"] == "x"
+
+        # --- ticks ---
+        tk = ticks(ax, 1.0)
+        @test tk isa JSXElement
+        @test tk.type_name == "ticks"
+        @test tk.parents[1] === ax
+        @test tk.parents[2] == 1.0
+
+        # ticks without distance
+        tk2 = ticks(ax)
+        @test tk2.type_name == "ticks"
+        @test length(tk2.parents) == 1
+
+        # ticks with attributes
+        tk3 = ticks(ax, 2.0; minorTicks=4, drawLabels=true)
+        @test tk3.attributes["minorTicks"] == 4
+        @test tk3.attributes["drawLabels"] == true
+
+        # --- legend ---
+        fg2 = functiongraph(cos)
+        leg = legend(fg, fg2; labels=["sin", "cos"])
+        @test leg isa JSXElement
+        @test leg.type_name == "legend"
+        @test length(leg.parents) == 2
+        @test leg.parents[1] === fg
+        @test leg.parents[2] === fg2
+        @test leg.attributes["labels"] == ["sin", "cos"]
+
+        # --- HTML rendering ---
+        b = Board("test_comp_trans")
+        p_origin = point(0, 0)
+        p_xdir = point(1, 0)
+        push!(b, p_origin, p_xdir)
+        push!(b, gr)
+        push!(b, axis(p_origin, p_xdir))
+        html = html_string(b)
+        @test occursin("create('grid'", html)
+        @test occursin("create('axis'", html)
+
+        # All 9 composition/transformation constructors produce correct type_name
+        @test group(p1).type_name == "group"
+        @test transformation("translate", 1, 0).type_name == "transformation"
+        @test reflection(l).type_name == "reflection"
+        @test rotation(p1, π).type_name == "rotation"
+        @test translation(1, 0).type_name == "translation"
+        @test grid().type_name == "grid"
+        @test axis(p1, p2).type_name == "axis"
+        @test ticks(ax).type_name == "ticks"
+        @test legend(fg).type_name == "legend"
+    end
+
     @testset "High-Level Plot" begin
         # Returns a Board
         b = plot(sin, (-5, 5))

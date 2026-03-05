@@ -48,6 +48,50 @@ p = parabola(p1, l)
 
 See [`point`](@ref), [`line`](@ref), [`circle`](@ref), [`polygon`](@ref) in the API Reference.
 
+## Composition & Transformation Elements
+
+9 constructors for grouping, transformations, axes, and grids:
+
+```julia
+using JSXGraph
+
+p1 = point(0, 0)
+p2 = point(1, 0)
+p3 = point(0, 1)
+l = line(p1, p2)
+
+# Group elements for collective operations
+g = group(p1, p2, l)
+
+# Transformations (translate, rotate, scale, reflect, shear, generic)
+t = transformation("translate", 2, 3)
+t = transformation("rotate", π/4)
+t = transformation("rotate", π/4, 1, 1)   # rotate around (1,1)
+
+# Convenience constructors for common transformations
+r = reflection(l)              # reflect across a line
+rot = rotation(p1, π/4)       # rotate around a point
+tr = translation(2, 3)        # translate by (dx, dy)
+
+# Grid overlay
+gr = grid()
+gr = grid(; majorStep=[1, 1])
+
+# Custom axes
+ax = axis(p1, point(1, 0); name="x")
+ay = axis(p1, point(0, 1); name="y")
+
+# Tick marks on an axis
+tk = ticks(ax, 1.0; minorTicks=4, drawLabels=true)
+
+# Legend
+fg1 = functiongraph(sin; color="blue")
+fg2 = functiongraph(cos; color="red")
+leg = legend(fg1, fg2; labels=["sin", "cos"])
+```
+
+See [`group`](@ref), [`transformation`](@ref), [`reflection`](@ref), [`rotation`](@ref), [`translation`](@ref), [`grid`](@ref), [`axis`](@ref), [`ticks`](@ref), [`legend`](@ref) in the API Reference.
+
 ## Analytic Elements
 
 11 constructors for mathematical functions and calculus:
