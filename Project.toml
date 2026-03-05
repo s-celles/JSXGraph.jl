@@ -1,0 +1,34 @@
+name = "JSXGraph"
+uuid = "861df16c-a258-49bd-8343-e8a09d96ee6f"
+version = "0.5.0"
+authors = ["Sebastien Celles <s.celles@gmail.com>"]
+
+[deps]
+Artifacts = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
+DocStringExtensions = "ffbed154-4ef7-542d-bbb7-c09d3a79fcae"
+JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+
+[weakdeps]
+Colors = "5ae59095-9a9b-59fe-a467-6f913c188581"
+DefaultApplication = "3f0dd361-4fe0-5fc6-8523-80b14ec94d85"
+Observables = "510215fc-4207-5dde-b226-833fc4488ee2"
+Tables = "bd369af6-aec1-5ad0-b16a-f7cc5008161c"
+Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
+
+[extensions]
+JSXGraphColorsExt = "Colors"
+JSXGraphDefaultApplicationExt = "DefaultApplication"
+JSXGraphObservablesExt = "Observables"
+JSXGraphTablesExt = "Tables"
+JSXGraphUnitfulExt = "Unitful"
+
+[compat]
+Colors = "0.12, 0.13"
+DefaultApplication = "1"
+DocStringExtensions = "0.9"
+JSON = "0.21"
+Observables = "0.5"
+Tables = "1"
+Unitful = "1"
+julia = "1.10"
