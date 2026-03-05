@@ -70,3 +70,34 @@ end
     # Invalid mode throws ArgumentError
     @test_throws ArgumentError html_string(Board("test"); asset_mode=:invalid)
 end
+
+@testset "save() to File" begin
+    board = Board("save_test")
+    push!(board, point(1, 2))
+
+    # Inline mode (default)
+    tmpfile = tempname() * ".html"
+    result = save(tmpfile, board)
+    @test result == tmpfile
+    @test isfile(tmpfile)
+    content = read(tmpfile, String)
+    @test occursin("<!DOCTYPE html>", content)
+    @test occursin("jxgbox", content)
+    @test occursin("JXG.JSXGraph.initBoard", content)
+    @test occursin("create('point'", content)
+    @test length(content) > 100_000  # inline assets are large
+    rm(tmpfile)
+
+    # CDN mode
+    tmpfile_cdn = tempname() * ".html"
+    save(tmpfile_cdn, board; asset_mode=:cdn)
+    cdn_content = read(tmpfile_cdn, String)
+    @test occursin("cdn.jsdelivr.net", cdn_content)
+    @test length(cdn_content) < 10_000
+    rm(tmpfile_cdn)
+
+    # Returns the filename
+    tmpfile2 = tempname() * ".html"
+    @test save(tmpfile2, board) == tmpfile2
+    rm(tmpfile2)
+end

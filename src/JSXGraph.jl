@@ -8,7 +8,7 @@ using Random: randstring
 export AbstractJSXElement, Board
 export JSXElement, JSFunction
 export JSXGRAPH_VERSION
-export html_string, html_page, html_fragment
+export html_string, html_page, html_fragment, save
 export open_in_browser
 
 # Element constructors

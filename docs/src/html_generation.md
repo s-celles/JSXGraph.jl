@@ -61,6 +61,21 @@ html = html_string(board; asset_mode=:cdn)
 CDN mode produces output that is at least 80% smaller than inline mode, but
 requires an internet connection when viewing.
 
+## Saving to File
+
+Save a board as a self-contained HTML file:
+
+```julia
+board = Board("myboard", xlim=(-5, 5), ylim=(-5, 5))
+push!(board, point(1, 2; color="red"))
+
+# Save with inlined assets (default — works offline)
+save("plot.html", board)
+
+# Save with CDN references (smaller file, needs internet)
+save("plot_cdn.html", board; asset_mode=:cdn)
+```
+
 ## Version Information
 
 The bundled JSXGraph library version is available as:
@@ -75,4 +90,5 @@ JSXGRAPH_VERSION  # "1.12.2"
 html_string
 html_page
 html_fragment
+save
 ```

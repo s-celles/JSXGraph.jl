@@ -141,3 +141,31 @@ Equivalent to `html_string(board; full_page=false, kwargs...)`.
 function html_fragment(board::Board; kwargs...)::String
     return html_string(board; full_page=false, kwargs...)
 end
+
+"""
+$(SIGNATURES)
+
+Save a board to an HTML file.
+
+Writes a self-contained HTML document with all JS/CSS assets inlined by default.
+
+# Arguments
+- `filename::String`: Output file path (should end in `.html`)
+- `board::Board`: The board to save
+- `asset_mode::Symbol=:inline`: `:inline` embeds JS/CSS; `:cdn` references CDN URLs
+
+# Examples
+```julia
+board = Board("myboard", xlim=(-5,5), ylim=(-5,5))
+push!(board, point(1, 2))
+save("plot.html", board)
+save("plot_cdn.html", board; asset_mode=:cdn)
+```
+"""
+function save(filename::String, board::Board; asset_mode::Symbol=:inline)
+    html = html_string(board; full_page=true, asset_mode=asset_mode)
+    open(filename, "w") do io
+        write(io, html)
+    end
+    return filename
+end

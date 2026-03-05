@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Custom theme support via `register_theme!` and `load_theme` from TOML/JSON files (REQ-API-022)
 - Board-level theme defaults (e.g., background color) applied automatically
 - Themes documentation page
+- `save(filename, board)` function for writing self-contained HTML files (REQ-ECO-010)
 
 ## [0.5.0] - 2026-03-01
 
