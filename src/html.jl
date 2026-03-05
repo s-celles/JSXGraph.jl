@@ -178,6 +178,14 @@ save("plot.svg", board)
 function save(filename::String, board::Board; asset_mode::Symbol=:inline)
     ext = lowercase(splitext(filename)[2])
     if ext == ".svg"
+        if !hasmethod(save_svg, Tuple{String, Board})
+            error(
+                "SVG export requires the NodeJS_22_jll package.\n" *
+                "Install and load it with:\n" *
+                "  using Pkg; Pkg.add(\"NodeJS_22_jll\")\n" *
+                "  using NodeJS_22_jll"
+            )
+        end
         return save_svg(filename, board)
     elseif ext == ".html" || ext == ".htm"
         html = html_string(board; full_page=true, asset_mode=asset_mode)

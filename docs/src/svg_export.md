@@ -4,30 +4,36 @@ JSXGraph.jl supports exporting boards as static SVG images via `save()` or `save
 
 ## Requirements
 
-SVG export uses **Node.js** and **jsdom** to render JSXGraph boards headlessly.
-On first use, `jsdom` is automatically installed in a package-local directory (`.node_deps/`).
+SVG export is provided via a **package extension** that depends on
+[`NodeJS_22_jll`](https://github.com/JuliaBinaryWrappers/NodeJS_22_jll.jl).
+Node.js v22 is automatically downloaded as a Julia artifact — no system
+installation needed. On first SVG export, the `jsdom` npm package is
+installed in a package-local directory (`.node_deps/`).
 
-- [Node.js](https://nodejs.org/) must be available on your `PATH`
-- npm (bundled with Node.js) is used for jsdom installation
+```julia
+using Pkg
+Pkg.add("NodeJS_22_jll")
+```
 
 ## Usage
 
 ### Export via `save()`
 
-The `save()` function dispatches on the file extension:
+Load `NodeJS_22_jll`, then the `save()` function dispatches on the file extension:
 
 ```julia
 using JSXGraph
+using NodeJS_22_jll  # activates SVG export extension
 
 b = board("myboard", xlim=(-5, 5), ylim=(-5, 5)) do
     point(1, 2; name="A")
     circle(point(0, 0), 3; strokeColor="blue")
 end
 
-# HTML export
+# HTML export (always available)
 save("plot.html", b)
 
-# SVG export
+# SVG export (requires NodeJS_22_jll)
 save("plot.svg", b)
 ```
 
@@ -42,7 +48,7 @@ save_svg("plot.svg", b)
 | Extension | Format | Backend |
 |-----------|--------|---------|
 | `.html`   | Self-contained HTML page | Built-in |
-| `.svg`    | Scalable Vector Graphics | Node.js + jsdom |
+| `.svg`    | Scalable Vector Graphics | NodeJS_22_jll + jsdom |
 
 Unsupported extensions (e.g. `.png`, `.pdf`) raise an `ErrorException`.
 
@@ -60,14 +66,17 @@ save_svg
 4. The resulting SVG element is extracted from the DOM
 5. The SVG is written to the output file with proper XML headers
 
+Node.js is provided by `NodeJS_22_jll` (Julia artifact, no system dependency).
+
 ## Troubleshooting
 
-**Node.js not found**: Install Node.js from <https://nodejs.org/> or via your package manager:
-- macOS: `brew install node`
-- Ubuntu/Debian: `sudo apt install nodejs npm`
+**"SVG export requires the NodeJS_22_jll package"**: Load it first:
+```julia
+using NodeJS_22_jll
+```
 
 **jsdom installation fails**: Try installing manually:
 ```sh
 cd ~/.julia/packages/JSXGraph/<hash>/.node_deps
-npm install jsdom
+~/.julia/artifacts/<nodejs_hash>/bin/npm install jsdom
 ```

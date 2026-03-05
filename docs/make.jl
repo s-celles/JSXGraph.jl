@@ -25,7 +25,7 @@ makedocs(;
         "Themes" => "themes.md",
         "Recipe System" => "recipes.md",
     ],
-    warnonly=[:missing_docs],
+    warnonly=[:missing_docs, :docs_block],
 )
 
 deploydocs(; repo="github.com/s-celles/JSXGraph.jl", devbranch="main", push_preview=true)

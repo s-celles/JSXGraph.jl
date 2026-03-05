@@ -1,7 +1,10 @@
 """
 SVG export support for JSXGraph boards (REQ-ECO-011).
 
-Uses Node.js + jsdom to render JSXGraph boards headlessly and extract the SVG output.
+The actual implementation lives in `ext/JSXGraphNodeJSExt.jl` and is loaded
+automatically when `NodeJS_22_jll` is available. The core module provides
+the script generation utilities and a stub `save_svg` that errors with
+instructions when the extension is not loaded.
 """
 
 """
@@ -16,63 +19,6 @@ function _node_modules_dir()
         _NODE_MODULES_DIR[] = joinpath(dirname(dirname(@__FILE__)), ".node_deps")
     end
     return _NODE_MODULES_DIR[]
-end
-
-"""
-    _find_node() -> String
-
-Find the `node` executable on the system PATH. Throws an error with instructions if not found.
-"""
-function _find_node()::String
-    node = Sys.which("node")
-    if node === nothing
-        error(
-            "Node.js is required for SVG export but was not found on PATH.\n" *
-            "Install Node.js from https://nodejs.org/ or via your package manager.\n" *
-            "On macOS: `brew install node`\n" *
-            "On Ubuntu: `sudo apt install nodejs npm`"
-        )
-    end
-    return node
-end
-
-"""
-    _find_npm() -> String
-
-Find the `npm` executable on the system PATH. Throws an error with instructions if not found.
-"""
-function _find_npm()::String
-    npm = Sys.which("npm")
-    if npm === nothing
-        error(
-            "npm is required for SVG export but was not found on PATH.\n" *
-            "Install Node.js (which includes npm) from https://nodejs.org/"
-        )
-    end
-    return npm
-end
-
-"""
-    _ensure_jsdom()
-
-Ensure jsdom is installed in the package-local node_modules directory.
-Installs it automatically on first use.
-"""
-function _ensure_jsdom()
-    deps_dir = _node_modules_dir()
-    jsdom_dir = joinpath(deps_dir, "node_modules", "jsdom")
-    if isdir(jsdom_dir)
-        return  # already installed
-    end
-    npm = _find_npm()
-    mkpath(deps_dir)
-    @info "Installing jsdom for SVG export (one-time setup)..."
-    cmd = Cmd(`$npm install --prefix $deps_dir jsdom`; dir=deps_dir)
-    result = run(pipeline(cmd; stdout=devnull, stderr=devnull); wait=true)
-    if !isdir(jsdom_dir)
-        error("Failed to install jsdom. Try manually: `cd $deps_dir && npm install jsdom`")
-    end
-    @info "jsdom installed successfully."
 end
 
 """
@@ -175,55 +121,21 @@ end
 
 Export a board as a static SVG image file.
 
-Requires Node.js to be installed on the system. On first use, automatically
-installs the `jsdom` npm package in a package-local directory.
+Requires `NodeJS_22_jll` to be installed. Add it with:
+
+```julia
+using Pkg; Pkg.add("NodeJS_22_jll")
+```
+
+Then load it before calling `save_svg`:
+
+```julia
+using NodeJS_22_jll
+save("plot.svg", board)
+```
 
 # Arguments
 - `filename::String`: Output file path (should end in `.svg`)
 - `board::Board`: The board to export
-
-# Examples
-```julia
-board = Board("myboard", xlim=(-5,5), ylim=(-5,5))
-push!(board, point(1, 2; name="A"))
-push!(board, circle(point(0, 0), 3))
-save("plot.svg", board)
-```
 """
-function save_svg(filename::String, board::Board)
-    node = _find_node()
-    _ensure_jsdom()
-
-    script = _svg_export_script(board)
-    deps_dir = _node_modules_dir()
-
-    # Write script to a temp file
-    script_path = tempname() * ".js"
-    try
-        write(script_path, script)
-
-        # Run node with NODE_PATH pointing to our local node_modules
-        node_path = joinpath(deps_dir, "node_modules")
-        env = copy(ENV)
-        env["NODE_PATH"] = node_path
-
-        output = IOBuffer()
-        errors = IOBuffer()
-        cmd = Cmd(`$node $script_path`; env=env)
-        proc = run(pipeline(cmd; stdout=output, stderr=errors); wait=true)
-
-        svg_content = String(take!(output))
-        err_content = String(take!(errors))
-
-        if isempty(svg_content)
-            error("SVG export produced no output. Errors:\n$err_content")
-        end
-
-        open(filename, "w") do io
-            write(io, svg_content)
-        end
-    finally
-        rm(script_path; force=true)
-    end
-    return filename
-end
+function save_svg end

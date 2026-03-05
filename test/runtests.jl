@@ -3,6 +3,7 @@ using JSXGraph
 using JSXGraphRecipesBase
 using Colors
 using Tables
+using NodeJS_22_jll
 
 @testset "JSXGraph.jl" begin
     include("test_types.jl")
