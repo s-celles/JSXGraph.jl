@@ -15,6 +15,7 @@ makedocs(;
     ),
     pages=[
         "Home" => "index.md",
+        "Getting Started" => "tutorial.md",
         "HTML Generation" => "html_generation.md",
         "Display Protocol" => "display.md",
         "Geometric Elements" => "elements.md",

@@ -41,6 +41,8 @@ html = html_string(board)
 html = html_string(board; asset_mode=:cdn)
 ```
 
+See the [Getting Started](@ref) tutorial for a comprehensive walkthrough.
+
 ## API Reference
 
 ```@index
