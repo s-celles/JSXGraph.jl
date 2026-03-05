@@ -137,4 +137,4 @@ Legend: ✅ Done | 🔧 Partial | ⬜ Not started
 | **0.7.0** | Theming | `set_theme!`, `with_theme`, 3 built-in themes |
 | **0.8.0** | Convenience API | `scatter`, `parametric`, `implicit`, `polar`, `do`-block |
 | **0.9.0** | Ecosystem | Tables.jl ingestion, Unitful.jl labels, recipe system |
-| **1.0.0** | Stable release | General Registry, full docs gallery, ≥ 80% coverage |
+| **0.10.0** | Pre-release | General Registry, full docs gallery, ≥ 80% coverage |
