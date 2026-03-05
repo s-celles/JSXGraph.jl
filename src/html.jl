@@ -155,14 +155,16 @@ end
 """
 $(SIGNATURES)
 
-Save a board to an HTML file.
+Save a board to a file.
 
-Writes a self-contained HTML document with all JS/CSS assets inlined by default.
+Dispatches on the file extension:
+- `.html` (default): writes a self-contained HTML document
+- `.svg`: exports a static SVG image (requires Node.js)
 
 # Arguments
-- `filename::String`: Output file path (should end in `.html`)
+- `filename::String`: Output file path (`.html` or `.svg`)
 - `board::Board`: The board to save
-- `asset_mode::Symbol=:inline`: `:inline` embeds JS/CSS; `:cdn` references CDN URLs
+- `asset_mode::Symbol=:inline`: for HTML output — `:inline` embeds JS/CSS; `:cdn` references CDN URLs
 
 # Examples
 ```julia
@@ -170,14 +172,25 @@ board = Board("myboard", xlim=(-5,5), ylim=(-5,5))
 push!(board, point(1, 2))
 save("plot.html", board)
 save("plot_cdn.html", board; asset_mode=:cdn)
+save("plot.svg", board)
 ```
 """
 function save(filename::String, board::Board; asset_mode::Symbol=:inline)
-    html = html_string(board; full_page=true, asset_mode=asset_mode)
-    open(filename, "w") do io
-        write(io, html)
+    ext = lowercase(splitext(filename)[2])
+    if ext == ".svg"
+        return save_svg(filename, board)
+    elseif ext == ".html" || ext == ".htm"
+        html = html_string(board; full_page=true, asset_mode=asset_mode)
+        open(filename, "w") do io
+            write(io, html)
+        end
+        return filename
+    else
+        error(
+            "Unsupported file extension '$ext'. " *
+            "Supported formats: .html, .svg"
+        )
     end
-    return filename
 end
 
 """

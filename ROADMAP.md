@@ -94,7 +94,7 @@ Legend: ✅ Done | 🔧 Partial | ⬜ Not started
 | REQ-QA-001 | ≥ 80% code coverage in CI | ⬜ |
 | REQ-QA-002 | HTML snapshot tests | ✅ |
 | REQ-QA-003 | CI pipeline: tests + lint + docs on PR | ✅ |
-| REQ-ECO-011 | SVG export via `save(*.svg)` | ⬜ |
+| REQ-ECO-011 | SVG export via `save(*.svg)` | ✅ |
 | REQ-ECO-012 | PNG/PDF export via headless browser | ⬜ |
 | REQ-PERF-001 | `using JSXGraph` under 1 second | ✅ (37 ms) |
 | REQ-PERF-002 | 100-element board HTML in < 50 ms | ✅ (< 2 ms) |

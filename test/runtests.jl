@@ -18,5 +18,6 @@ using Tables
     include("test_unitful.jl")
     include("test_recipes.jl")
     include("test_snapshots.jl")
+    include("test_svg_export.jl")
 end
 
