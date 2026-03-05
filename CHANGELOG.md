@@ -18,6 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `save(filename, board)` function for writing self-contained HTML files (REQ-ECO-010)
 - `@jsf` macro for compile-time Julia-to-JavaScript transpilation with validation (REQ-JSF-001)
 - Unsupported construct detection in `@jsf` (try/catch, loops, comprehensions, multi-statement bodies) (REQ-JSF-002)
+- `scatter(x, y)` convenience function for scatter plots with auto-computed axis limits (REQ-API-002)
+- `parametric(fx, fy, t_range)` convenience function for parametric curves (REQ-API-002)
+- `implicit(F)` convenience function for implicit curves (REQ-API-002)
+- `polar(r, θ_range)` convenience function for polar curves (REQ-API-002)
 
 ## [0.5.0] - 2026-03-01
 

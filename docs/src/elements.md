@@ -170,6 +170,67 @@ b = plot(cos, (0, 2π); color="blue", strokeWidth=3)
 
 See [`plot`](@ref) in the API Reference.
 
+## Convenience Functions
+
+Four high-level functions create complete boards for common plot types:
+
+### Scatter Plots
+
+```julia
+using JSXGraph
+
+# Basic scatter
+b = scatter([1, 2, 3, 4], [1, 4, 9, 16])
+
+# With styling (axis limits auto-computed with 10% padding)
+b = scatter([0.0, 1.0, 2.0], [0.0, 1.0, 0.0]; color="red", size=4)
+
+# Explicit axis limits
+b = scatter([1, 2, 3], [1, 4, 9]; xlim=(0, 5), ylim=(0, 12))
+```
+
+### Parametric Curves
+
+```julia
+using JSXGraph
+
+# Unit circle
+b = parametric(cos, sin, (0, 2π))
+
+# Ellipse with custom limits
+b = parametric(:(t -> 3cos(t)), :(t -> 2sin(t)), (0, 2π);
+               xlim=(-4, 4), ylim=(-3, 3), color="blue")
+```
+
+### Implicit Curves
+
+```julia
+using JSXGraph
+
+# Unit circle: x² + y² - 1 = 0
+b = implicit(:((x, y) -> x^2 + y^2 - 1))
+
+# Ellipse with custom bounds
+b = implicit(:((x, y) -> x^2/4 + y^2/9 - 1); xlim=(-3, 3), ylim=(-4, 4))
+```
+
+### Polar Curves
+
+```julia
+using JSXGraph
+
+# Cardioid
+b = polar(:(θ -> 1 + cos(θ)))
+
+# Spiral over 4π
+b = polar(:(θ -> θ), (0, 4π))
+
+# Rose curve with styling
+b = polar(:(θ -> cos(3θ)); color="magenta")
+```
+
+See [`scatter`](@ref), [`parametric`](@ref), [`implicit`](@ref), [`polar`](@ref) in the API Reference.
+
 ## Julia-to-JavaScript Conversion
 
 The [`julia_to_js`](@ref) function converts Julia expressions to JavaScript strings:
