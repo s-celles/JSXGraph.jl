@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Board + custom_object` operator overload for recipe types
 - `has_recipe` function to check if a type has a registered recipe
 - Recipe System documentation page
+- HTML size warning when generated content exceeds 1 MB (excluding library assets) (REQ-PERF-003)
+- HTML snapshot tests for 10 major element types to detect regressions (REQ-QA-002)
 - 9 composition and transformation element constructors: `group`, `transformation`, `reflection`, `rotation`, `translation`, `grid`, `axis`, `ticks`, `legend` (REQ-GEO-004)
 - Theming system with `set_theme!`, `reset_theme!`, `with_theme`, `current_theme` (REQ-API-020)
 - Three built-in themes: `THEME_DEFAULT`, `THEME_DARK`, `THEME_PUBLICATION` (REQ-API-021)

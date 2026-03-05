@@ -15,7 +15,9 @@
 
 # Exception for tests
 !test/
+!test/Project.toml
 !test/**/*.jl
+!test/snapshots/*.html
 
 # Exception for examples
 !examples/

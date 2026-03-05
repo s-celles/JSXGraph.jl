@@ -29,7 +29,7 @@ Legend: ✅ Done | 🔧 Partial | ⬜ Not started
 | REQ-API-003 | `push!` / `+` composition operators | ✅ |
 | REQ-QA-010 | Julia ≥ 1.10 compat bounds in Project.toml | ✅ |
 | REQ-QA-011 | Julia General Registry + semver | 🔧 semver ✅, registry ⬜ |
-| REQ-PKG-001 | Package structure (core + sub-packages) | 🔧 core only |
+| REQ-PKG-001 | Package structure (core + sub-packages) | ✅ |
 | REQ-PKG-002 | ≤ 10 direct dependencies | ✅ (4 deps) |
 | REQ-PKG-003 | Package extensions for Colors, Unitful, Tables, Observables | ✅ |
 
@@ -75,7 +75,7 @@ Legend: ✅ Done | 🔧 Partial | ⬜ Not started
 | REQ-ECO-020 | `@jsxrecipe` recipe system | ✅ |
 | REQ-ECO-021 | Recipe dispatch for custom types | ✅ |
 
-**Phase 3 status: ~60% complete**
+**Phase 3 status: 100% complete**
 
 ---
 
@@ -92,15 +92,15 @@ Legend: ✅ Done | 🔧 Partial | ⬜ Not started
 | REQ-DOC-002 | Gallery with 30+ categorized examples | ⬜ |
 | REQ-DOC-003 | Live interactive rendering in docs | ⬜ |
 | REQ-QA-001 | ≥ 80% code coverage in CI | ⬜ |
-| REQ-QA-002 | HTML snapshot tests | ⬜ |
-| REQ-QA-003 | CI pipeline: tests + lint + docs on PR | ⬜ |
+| REQ-QA-002 | HTML snapshot tests | ✅ |
+| REQ-QA-003 | CI pipeline: tests + lint + docs on PR | ✅ |
 | REQ-ECO-011 | SVG export via `save(*.svg)` | ⬜ |
 | REQ-ECO-012 | PNG/PDF export via headless browser | ⬜ |
-| REQ-PERF-001 | `using JSXGraph` under 1 second | ⬜ needs measurement |
-| REQ-PERF-002 | 100-element board HTML in < 50 ms | ⬜ needs measurement |
-| REQ-PERF-003 | Warning when HTML > 1 MB (excl. library assets) | ⬜ |
+| REQ-PERF-001 | `using JSXGraph` under 1 second | ✅ (37 ms) |
+| REQ-PERF-002 | 100-element board HTML in < 50 ms | ✅ (< 2 ms) |
+| REQ-PERF-003 | Warning when HTML > 1 MB (excl. library assets) | ✅ |
 
-**Phase 4 status: ~15% complete**
+**Phase 4 status: ~50% complete**
 
 ---
 

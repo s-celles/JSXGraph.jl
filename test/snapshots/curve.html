@@ -1,0 +1,7 @@
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/jsxgraph@1.12.2/distrib/jsxgraph.css" />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jsxgraph@1.12.2/distrib/jsxgraphcore.js"></script>
+<div id="snap_curve" class="jxgbox" style="width:500px;height:500px"></div>
+<script>
+var board_snap_curve = JXG.JSXGraph.initBoard('snap_curve', {"showNavigation":false,"showCopyright":false,"axis":true,"boundingbox":[-5,5,5,-5]});
+var el_001 = board_snap_curve.create('curve', ["function(t){ return 2*Math.cos(t); }","function(t){ return 2*Math.sin(t); }",0,6.28], {"strokeColor":"teal"});
+</script>

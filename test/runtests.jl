@@ -17,5 +17,6 @@ using Tables
     include("test_tables.jl")
     include("test_unitful.jl")
     include("test_recipes.jl")
+    include("test_snapshots.jl")
 end
 

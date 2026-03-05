@@ -1,0 +1,10 @@
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/jsxgraph@1.12.2/distrib/jsxgraph.css" />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jsxgraph@1.12.2/distrib/jsxgraphcore.js"></script>
+<div id="snap_arc" class="jxgbox" style="width:500px;height:500px"></div>
+<script>
+var board_snap_arc = JXG.JSXGraph.initBoard('snap_arc', {"showNavigation":false,"showCopyright":false,"axis":true,"boundingbox":[-5,5,5,-5]});
+var el_001 = board_snap_arc.create('point', [0,0], {"name":"C"});
+var el_002 = board_snap_arc.create('point', [3,0], {"name":"P1"});
+var el_003 = board_snap_arc.create('point', [0,3], {"name":"P2"});
+var el_004 = board_snap_arc.create('arc', [el_001,el_002,el_003], {"strokeColor":"orange"});
+</script>

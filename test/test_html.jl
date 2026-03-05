@@ -101,3 +101,23 @@ end
     @test save(tmpfile2, board) == tmpfile2
     rm(tmpfile2)
 end
+
+@testset "HTML Size Warning (REQ-PERF-003)" begin
+    # Small board should not warn
+    b = Board("small")
+    push!(b, point(1, 2))
+    @test_nowarn html_string(b)
+    @test_nowarn html_string(b; asset_mode=:cdn)
+
+    # Verify threshold constant exists
+    @test JSXGraph.HTML_SIZE_THRESHOLD == 1_048_576
+
+    # Board with artificially large content should warn
+    b_large = Board("large")
+    # Add many elements with long attribute values to exceed 1 MB of content
+    for i in 1:5000
+        push!(b_large, text(0, 0, repeat("x", 250); name="t_$i"))
+    end
+    @test_warn r"exceeds the 1 MB threshold" html_string(b_large; asset_mode=:cdn)
+    @test_warn r"exceeds the 1 MB threshold" html_string(b_large; asset_mode=:inline)
+end

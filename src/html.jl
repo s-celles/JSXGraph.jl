@@ -123,9 +123,11 @@ html = html_string(board; asset_mode=:cdn)          # CDN references
 ```
 """
 function html_string(board::Board; full_page::Bool=true, asset_mode::Symbol=:inline)::String
-    return sprint() do io
+    html = sprint() do io
         render_board_html(io, board; full_page=full_page, asset_mode=asset_mode)
     end
+    _check_html_size(html, board, asset_mode)
+    return html
 end
 
 """
@@ -176,4 +178,50 @@ function save(filename::String, board::Board; asset_mode::Symbol=:inline)
         write(io, html)
     end
     return filename
+end
+
+"""
+    HTML_SIZE_THRESHOLD
+
+Maximum content size (in bytes) for generated HTML, excluding inlined JSXGraph library
+assets. If the content exceeds this threshold, a warning is emitted suggesting the user
+reduce element count or switch to CDN-based asset loading.
+
+Default: 1 MB (1_048_576 bytes).
+"""
+const HTML_SIZE_THRESHOLD = 1_048_576
+
+"""
+    _asset_overhead() -> Int
+
+Estimate the byte size of the inlined JSXGraph library assets (JS + CSS + wrapper tags).
+"""
+function _asset_overhead()::Int
+    return length(jsxgraph_js()) + length(jsxgraph_css()) +
+           length("<style>\n\n</style>\n<script>\n\n</script>\n")
+end
+
+"""
+    _check_html_size(html, board, asset_mode)
+
+Emit a warning if the generated HTML content (excluding library assets) exceeds
+[`HTML_SIZE_THRESHOLD`](@ref) (REQ-PERF-003).
+"""
+function _check_html_size(html::String, board::Board, asset_mode::Symbol)
+    content_size = if asset_mode == :inline
+        length(html) - _asset_overhead()
+    else
+        length(html)
+    end
+    if content_size > HTML_SIZE_THRESHOLD
+        size_mb = round(content_size / 1_048_576; digits=2)
+        @warn(
+            "Generated HTML content is $(size_mb) MB (excluding library assets), " *
+            "which exceeds the 1 MB threshold. Consider reducing the number of elements " *
+            "or switching to CDN-based asset loading (asset_mode=:cdn).",
+            board_id = board.id,
+            element_count = length(board.elements),
+        )
+    end
+    return nothing
 end

@@ -1,0 +1,8 @@
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/jsxgraph@1.12.2/distrib/jsxgraph.css" />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jsxgraph@1.12.2/distrib/jsxgraphcore.js"></script>
+<div id="snap_circle" class="jxgbox" style="width:500px;height:500px"></div>
+<script>
+var board_snap_circle = JXG.JSXGraph.initBoard('snap_circle', {"showNavigation":false,"showCopyright":false,"axis":true,"boundingbox":[-5,5,5,-5]});
+var el_001 = board_snap_circle.create('point', [0,0], {"name":"Center"});
+var el_002 = board_snap_circle.create('circle', [el_001,3], {"strokeColor":"green"});
+</script>
