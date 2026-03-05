@@ -184,3 +184,38 @@ julia_to_js(sin)                # "function(x){return Math.sin(x);}"
 ```
 
 Supported mappings include `sin`, `cos`, `tan`, `exp`, `log`, `sqrt`, `abs`, `floor`, `ceil`, and constants `π` → `Math.PI`, `ℯ` → `Math.E`.
+
+### The `@jsf` Macro
+
+The [`@jsf`](@ref) macro provides a convenient way to create [`JSFunction`](@ref)
+objects directly from Julia expressions, with compile-time validation:
+
+```julia
+using JSXGraph
+
+# Create a JSFunction from a lambda
+f = @jsf x -> sin(x) + x^2
+
+# Use directly in element constructors
+fg = functiongraph(@jsf x -> cos(x) * exp(-x))
+
+# Multi-argument functions
+g = @jsf (x, y) -> x^2 + y^2
+
+# Mathematical constants are handled
+h = @jsf x -> sin(π * x)
+```
+
+**Supported constructs:** arithmetic (`+`, `-`, `*`, `/`, `^`), math functions
+(`sin`, `cos`, `tan`, `exp`, `log`, `sqrt`, …), constants (`π`, `ℯ`), comparisons,
+ternary `ifelse`, and anonymous functions.
+
+**Unsupported constructs** (raise a compile-time error): `try`/`catch`, `for`/`while`
+loops, array comprehensions, multi-statement function bodies, `let` blocks, `do` blocks,
+`struct`/`module`/`import`/`using`/`export` definitions.
+
+```julia
+# These will raise ArgumentError at macro-expansion time:
+@jsf x -> begin; y = x^2; y + 1; end   # multi-statement body
+@jsf for i in 1:10; println(i); end     # for loop
+```

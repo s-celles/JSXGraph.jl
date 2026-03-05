@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Board-level theme defaults (e.g., background color) applied automatically
 - Themes documentation page
 - `save(filename, board)` function for writing self-contained HTML files (REQ-ECO-010)
+- `@jsf` macro for compile-time Julia-to-JavaScript transpilation with validation (REQ-JSF-001)
+- Unsupported construct detection in `@jsf` (try/catch, loops, comprehensions, multi-statement bodies) (REQ-JSF-002)
 
 ## [0.5.0] - 2026-03-01
 

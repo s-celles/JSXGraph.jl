@@ -23,7 +23,7 @@ export group, transformation, reflection, rotation, translation
 export grid, axis, ticks, legend
 
 # Composition and convenience
-export plot, julia_to_js
+export plot, julia_to_js, @jsf
 
 # Theming
 export Theme, THEME_DEFAULT, THEME_DARK, THEME_PUBLICATION

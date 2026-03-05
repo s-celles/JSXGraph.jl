@@ -166,3 +166,92 @@ function _lambda_to_js(expr::Expr)
     body_js = julia_to_js(body)
     return "function($(param_str)){return $(body_js);}"
 end
+
+# --- Unsupported construct detection (REQ-JSF-002) ---
+
+"""
+Set of expression heads that cannot be transpiled to JavaScript.
+"""
+const UNSUPPORTED_EXPR_HEADS = Set([
+    :try,           # try/catch
+    :for,           # for loops
+    :while,         # while loops
+    :comprehension, # array comprehensions
+    :generator,     # generator expressions
+    :struct,        # type definitions
+    :macro,         # macro definitions
+    :module,        # module definitions
+    :import,        # import statements
+    :using,         # using statements
+    :export,        # export statements
+    :let,           # let blocks
+    :do,            # do blocks
+])
+
+"""
+$(SIGNATURES)
+
+Validate that a Julia expression can be transpiled to JavaScript.
+
+Recursively walks the AST and throws an error if any unsupported construct
+is found (e.g., try/catch, loops, comprehensions, multiple dispatch).
+"""
+function _validate_jsf(expr)
+    if expr isa Expr
+        if expr.head in UNSUPPORTED_EXPR_HEADS
+            throw(ArgumentError(
+                "Unsupported Julia construct `$(expr.head)` cannot be transpiled to JavaScript. " *
+                "@jsf supports: arithmetic, math functions, comparisons, ifelse, and lambdas."
+            ))
+        end
+        # Check for multi-line function bodies (multiple statements)
+        if expr.head == :block
+            stmts = filter(e -> !(e isa LineNumberNode), expr.args)
+            if length(stmts) > 1
+                throw(ArgumentError(
+                    "Multi-statement function bodies are not supported by @jsf. " *
+                    "Use a single expression instead."
+                ))
+            end
+        end
+        # Recurse into children
+        for arg in expr.args
+            _validate_jsf(arg)
+        end
+    end
+    return nothing
+end
+
+# --- @jsf macro (REQ-JSF-001) ---
+
+"""
+    @jsf expression
+
+Transpile a Julia mathematical expression into a [`JSFunction`](@ref) object
+containing equivalent JavaScript code.
+
+Supports arithmetic operators, `^` (power), comparison operators, ternary
+`ifelse`, standard math functions (`sin`, `cos`, `tan`, `exp`, `log`, `sqrt`,
+`abs`, `floor`, `ceil`, `min`, `max`, `pi`), and anonymous functions.
+
+# Examples
+```julia
+# Anonymous function → JSFunction
+f = @jsf x -> sin(x) + x^2
+
+# Use directly in element constructors
+fg = functiongraph(@jsf x -> cos(x) * exp(-x))
+
+# Multi-argument function
+g = @jsf (x, y) -> x^2 + y^2
+```
+
+If the expression contains unsupported Julia constructs (e.g., `try/catch`,
+`for` loops, array comprehensions), a compile-time error is raised.
+"""
+macro jsf(expr)
+    _validate_jsf(expr)
+    js_code = julia_to_js(expr)
+    return :(JSFunction($js_code))
+end
+
