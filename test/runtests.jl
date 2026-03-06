@@ -5,6 +5,7 @@ using Colors
 using Tables
 using Observables
 using NodeJS_22_jll
+using HTTP
 
 @testset "JSXGraph.jl" begin
     include("test_types.jl")
@@ -24,5 +25,6 @@ using NodeJS_22_jll
     include("test_recipes.jl")
     include("test_snapshots.jl")
     include("test_svg_export.jl")
+    include("test_websocket.jl")
 end
 

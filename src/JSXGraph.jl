@@ -34,6 +34,9 @@ export julia_to_js, @jsf, @named_jsf, named_jsf, with_deps
 export enable_mathjs!, disable_mathjs!, mathjs_enabled
 export MATHJS_VERSION, MATHJS_CDN_JS
 
+# WebSocket interactivity
+export LiveBoard, serve, stop_server!, on, off, update!
+
 # Theming
 export Theme, THEME_DEFAULT, THEME_DARK, THEME_PUBLICATION
 export set_theme!, reset_theme!, with_theme, current_theme
@@ -89,5 +92,6 @@ include("html.jl")
 include("svg_export.jl")
 include("display.jl")
 include("recipes.jl")
+include("websocket.jl")
 
 end # module JSXGraph
