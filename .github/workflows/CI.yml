@@ -40,7 +40,7 @@ jobs:
           arch: ${{ matrix.arch }}
       - uses: julia-actions/cache@v2
       - name: Dev unregistered dependencies
-        shell: julia --color=yes {0}
+        shell: julia --color=yes --project=. {0}
         run: |
           using Pkg
           # Remove this step once JSXGraphRecipesBase is in General registry
