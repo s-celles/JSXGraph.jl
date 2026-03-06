@@ -54,7 +54,7 @@ Legend: ✅ Done | 🔧 Partial | ⬜ Not started
 | REQ-ECO-010 | `save(filename, board)` for HTML export | ✅ |
 | REQ-DOC-001 | Documenter.jl site with tutorial + API reference | ✅ |
 
-**Phase 2 status: ~80% complete**
+**Phase 2 status: ~90% complete** (REQ-JSF-003 optional/deferred)
 
 ---
 
@@ -100,7 +100,7 @@ Legend: ✅ Done | 🔧 Partial | ⬜ Not started
 | REQ-PERF-002 | 100-element board HTML in < 50 ms | ✅ (< 2 ms) |
 | REQ-PERF-003 | Warning when HTML > 1 MB (excl. library assets) | ✅ |
 
-**Phase 4 status: ~70% complete**
+**Phase 4 status: ~85% complete** (REQ-INT-010 optional/deferred)
 
 ---
 
@@ -129,7 +129,7 @@ Legend: ✅ Done | 🔧 Partial | ⬜ Not started
 | REQ-3D-020 | 3D theming support | ✅ |
 | REQ-3D-021 | 3D element attribute aliases | ✅ |
 
-**Phase 5 status: ~35% complete (core infrastructure + 6 constructors)**
+**Phase 5 status: 100% complete**
 
 ---
 
@@ -151,10 +151,12 @@ Legend: ✅ Done | 🔧 Partial | ⬜ Not started
 2. ~~`@jsf` macro~~ (REQ-JSF-001/002) ✅
 3. ~~Theming system~~ (REQ-API-020/021/022) ✅
 4. ~~Convenience functions~~ (REQ-API-002) ✅
-5. **`do`-block syntax** (REQ-API-004) — idiomatic board construction
-6. **General Registry registration** (REQ-QA-011) — make the package installable with `Pkg.add`
-7. **Documentation gallery** (REQ-DOC-002/003) — 35 interactive examples ✅
-8. **CI coverage reporting** (REQ-QA-001/003) — GitHub Actions + Codecov
+5. ~~`do`-block syntax~~ (REQ-API-004) ✅
+6. ~~Documentation gallery~~ (REQ-DOC-002/003) — 37 interactive examples ✅
+7. ~~CI coverage reporting~~ (REQ-QA-001/003) — GitHub Actions + Codecov ✅
+8. **General Registry registration** (REQ-QA-011) — make the package installable with `Pkg.add`
+9. **MathJS integration** (REQ-JSF-003) — optional math expression support
+10. **WebSocket communication** (REQ-INT-010) — optional bidirectional Julia↔JS
 
 ---
 
