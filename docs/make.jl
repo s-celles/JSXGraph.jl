@@ -25,6 +25,7 @@ makedocs(;
         "Attribute Aliases" => "aliases.md",
         "Themes" => "themes.md",
         "Recipe System" => "recipes.md",
+        "API Reference" => "api.md",
     ],
     warnonly=[:missing_docs, :docs_block],
 )

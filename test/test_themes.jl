@@ -213,7 +213,7 @@
         @test p.attributes["size"] == 7
         @test p.attributes["strokeColor"] == "#112233"  # from global
 
-        rm(tmpfile)
+        try rm(tmpfile) catch end
         reset_theme!()
     end
 
@@ -233,7 +233,7 @@
         @test theme["point"]["size"] == 5
         @test theme["line"]["strokeWidth"] == 3
 
-        rm(tmpfile)
+        try rm(tmpfile) catch end
     end
 
     @testset "Invalid Theme File" begin

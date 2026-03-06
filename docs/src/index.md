@@ -45,9 +45,4 @@ See the [Getting Started](@ref) tutorial for a comprehensive walkthrough.
 
 ## API Reference
 
-```@index
-```
-
-```@autodocs
-Modules = [JSXGraph]
-```
+See the [API Reference](api.md) page for all exported functions and types.
