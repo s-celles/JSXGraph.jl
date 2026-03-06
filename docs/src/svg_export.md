@@ -32,9 +32,9 @@ Load `NodeJS_22_jll`, then the `save()` function dispatches on the file extensio
 using JSXGraph
 using NodeJS_22_jll  # activates static export extension
 
-b = board("myboard", xlim=(-5, 5), ylim=(-5, 5)) do
-    point(1, 2; name="A")
-    circle(point(0, 0), 3; strokeColor="blue")
+b = board("myboard", xlim=(-5, 5), ylim=(-5, 5)) do b
+    push!(b, point(1, 2; name="A"))
+    push!(b, circle(point(0, 0), 3; strokeColor="blue"))
 end
 
 # HTML export (always available)

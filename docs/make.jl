@@ -17,6 +17,7 @@ makedocs(;
     pages=[
         "Home" => "index.md",
         "Getting Started" => "tutorial.md",
+        "Gallery" => "gallery.md",
         "HTML Generation" => "html_generation.md",
         "Static Export" => "svg_export.md",
         "Display Protocol" => "display.md",

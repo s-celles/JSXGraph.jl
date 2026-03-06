@@ -89,7 +89,7 @@ Legend: ✅ Done | 🔧 Partial | ⬜ Not started
 | REQ-INT-002 | Dependent elements update in real time | ✅ |
 | REQ-INT-010 | WebSocket bidirectional communication (optional) | ⬜ |
 | REQ-INT-011 | Observables.jl live updates (optional) | ⬜ |
-| REQ-DOC-002 | Gallery with 30+ categorized examples | ⬜ |
+| REQ-DOC-002 | Gallery with 30+ categorized examples | ✅ |
 | REQ-DOC-003 | Live interactive rendering in docs | ⬜ |
 | REQ-QA-001 | ≥ 80% code coverage in CI | ✅ (93.7%) |
 | REQ-QA-002 | HTML snapshot tests | ✅ |
@@ -124,7 +124,7 @@ Legend: ✅ Done | 🔧 Partial | ⬜ Not started
 4. ~~Convenience functions~~ (REQ-API-002) ✅
 5. **`do`-block syntax** (REQ-API-004) — idiomatic board construction
 6. **General Registry registration** (REQ-QA-011) — make the package installable with `Pkg.add`
-7. **Documentation gallery** (REQ-DOC-002/003) — 30+ interactive examples
+7. **Documentation gallery** (REQ-DOC-002/003) — 35 interactive examples ✅
 8. **CI coverage reporting** (REQ-QA-001/003) — GitHub Actions + Codecov
 
 ---

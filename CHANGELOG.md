@@ -9,6 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Gallery documentation page with 35 categorized examples (REQ-DOC-002)
+
+### Fixed
+
+- String arguments to `functiongraph`, `slopefield`, `vectorfield`, `implicitcurve` are now wrapped as JavaScript function expressions instead of being JSON-quoted as JessieCode strings
+- `slopefield`, `vectorfield`, and `implicitcurve` correctly generate 2-parameter `function(x,y)` wrappers for string inputs
+- Strings starting with `function` are passed through as-is (e.g., `"function(x){ return x*x; }"`)
+- `riemannsum` now extracts the underlying `JSFunction` from `JSXElement` parents (e.g., passing a `functiongraph` element as the function argument)
+- `slopefield` and `vectorfield` now pass required `xData` and `yData` grid parameters to JSXGraph (fixes empty slope fields)
+- Gallery image example uses local asset instead of broken external URL
+- RequireJS-compatible loader for JSXGraph fragment embedding in Documenter.jl environments
+- Board initialization wrapped in try/catch to prevent cascade failures when one board errors in RequireJS environments
+
+### Added (continued)
+
 - `@jsxrecipe` macro for defining custom type recipes via method dispatch (REQ-ECO-020)
 - `JSXGraphRecipesBase.jl` lightweight interface package for recipe system (REQ-ECO-021)
 - `ElementSpec` intermediate representation type for recipe output
