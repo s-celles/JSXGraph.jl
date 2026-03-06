@@ -270,7 +270,7 @@ function save(filename::String, board::Board; asset_mode::Symbol=:inline, scale:
 end
 
 """
-    _require_nodejs_ext(format::String)
+$(SIGNATURES)
 
 Check that the NodeJS extension is loaded. Throws an informative error if not.
 """
@@ -297,7 +297,7 @@ Default: 1 MB (1_048_576 bytes).
 const HTML_SIZE_THRESHOLD = 1_048_576
 
 """
-    _asset_overhead() -> Int
+$(SIGNATURES)
 
 Estimate the byte size of the inlined JSXGraph library assets (JS + CSS + wrapper tags).
 """
@@ -307,7 +307,7 @@ function _asset_overhead()::Int
 end
 
 """
-    _check_html_size(html, board, asset_mode)
+$(SIGNATURES)
 
 Emit a warning if the generated HTML content (excluding library assets) exceeds
 [`HTML_SIZE_THRESHOLD`](@ref) (REQ-PERF-003).

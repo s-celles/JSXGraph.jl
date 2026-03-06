@@ -37,7 +37,7 @@ export ElementSpec, @jsxrecipe, apply_recipe, has_recipe
 export realize_specs
 
 """
-    sorted_json(d::AbstractDict) -> String
+$(SIGNATURES)
 
 Serialize a dictionary to JSON with keys sorted alphabetically.
 Ensures deterministic output across Julia versions and platforms.

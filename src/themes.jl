@@ -224,6 +224,8 @@ function _load_theme_json(filename::String)::Theme
 end
 
 """
+$(SIGNATURES)
+
 Normalize a raw parsed dictionary into a Theme.
 Ensures all inner values are Dict{String, Any}.
 """

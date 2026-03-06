@@ -111,7 +111,7 @@ Legend: ✅ Done | 🔧 Partial | ⬜ Not started
 | REQ-NF-001 | MIT license | ✅ |
 | REQ-NF-002 | CONTRIBUTING.md + issue templates | ✅ |
 | REQ-NF-003 | CHANGELOG.md (Keep a Changelog) | ✅ |
-| REQ-NF-004 | Docstrings with DocStringExtensions.jl | 🔧 partial |
+| REQ-NF-004 | Docstrings with DocStringExtensions.jl | ✅ |
 | REQ-QA-012 | Declared JSXGraph version + update mechanism | ✅ |
 
 ---

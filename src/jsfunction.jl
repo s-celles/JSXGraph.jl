@@ -335,6 +335,8 @@ end
 # --- Transitive dependency collection ---
 
 """
+$(SIGNATURES)
+
 Collect all transitive named [`JSFunction`](@ref) dependencies from a board's
 elements, returned in topological (definition) order.
 """

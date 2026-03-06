@@ -24,7 +24,7 @@ function _node_modules_dir()
 end
 
 """
-    _render_board_js_string(board::Board) -> String
+$(SIGNATURES)
 
 Generate the JavaScript code for a board as a string (without HTML wrapping).
 """
@@ -33,7 +33,7 @@ function _render_board_js_string(board::Board)::String
 end
 
 """
-    _board_dimensions(board::Board) -> (Int, Int)
+$(SIGNATURES)
 
 Extract board width and height from options.
 """
@@ -44,7 +44,7 @@ function _board_dimensions(board::Board)
 end
 
 """
-    _jsdom_board_preamble(board::Board) -> String
+$(SIGNATURES)
 
 Generate the common Node.js preamble that sets up jsdom, injects JSXGraph,
 and initializes the board. Shared by SVG, PNG, and PDF export scripts.
@@ -100,7 +100,7 @@ function _jsdom_board_preamble(board::Board)::String
 end
 
 """
-    _svg_extraction_js(board::Board) -> String
+$(SIGNATURES)
 
 Generate JavaScript code that extracts the SVG element from the board
 container and sets proper XML namespaces. The result is available as
@@ -133,7 +133,7 @@ function _svg_extraction_js(board::Board)::String
 end
 
 """
-    _svg_export_script(board::Board) -> String
+$(SIGNATURES)
 
 Generate a Node.js script that renders the board headlessly and prints the SVG to stdout.
 """
@@ -152,7 +152,7 @@ function _svg_export_script(board::Board)::String
 end
 
 """
-    _png_export_script(board::Board, output_path::String; scale::Int=1) -> String
+$(SIGNATURES)
 
 Generate a Node.js script that renders the board headlessly to a PNG file.
 Uses `sharp` for SVG → PNG conversion.
@@ -182,7 +182,7 @@ function _png_export_script(board::Board, output_path::String; scale::Int=1)::St
 end
 
 """
-    _pdf_export_script(board::Board, output_path::String) -> String
+$(SIGNATURES)
 
 Generate a Node.js script that renders the board headlessly to a PDF file.
 Uses `pdfkit` + `svg-to-pdfkit` for SVG → PDF conversion.
