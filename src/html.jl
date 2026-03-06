@@ -34,6 +34,19 @@ function render_assets(io::IO; mode::Symbol=:inline, css_only::Bool=false)
 end
 
 """
+Resolve child element parents, injecting view ranges for `functiongraph3d`
+elements that don't specify their own x/y ranges.
+"""
+function _resolve_child_parents(child::AbstractJSXElement, view::View3D)
+    if child.type_name == "functiongraph3d" && length(child.parents) == 1
+        # JSXGraph requires x/y ranges for functiongraph3d; use view's ranges
+        ranges = view.parents[3]  # [[xmin,xmax], [ymin,ymax], [zmin,zmax]]
+        return Any[child.parents[1], ranges[1], ranges[2]]
+    end
+    return child.parents
+end
+
+"""
 $(SIGNATURES)
 
 Write the JavaScript code that initializes a JSXGraph board to `io`.
@@ -77,7 +90,8 @@ function render_board_js(io::IO, board::Board)
             )
             for (j, child) in enumerate(elem.elements)
                 child_var = var_name * "_" * lpad(j, 3, '0')
-                child_parents_js = join([parent_to_js(p, elem_ids) for p in child.parents], ",")
+                child_parents = _resolve_child_parents(child, elem)
+                child_parents_js = join([parent_to_js(p, elem_ids) for p in child_parents], ",")
                 child_attrs_js = attrs_to_js(child.attributes)
                 print(
                     io,
