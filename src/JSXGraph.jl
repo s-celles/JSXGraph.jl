@@ -6,7 +6,7 @@ using Artifacts
 using Random: randstring
 using JSXGraphRecipesBase
 
-export AbstractJSXElement, Board
+export AbstractJSXElement, Board, View3D
 export JSXElement, JSFunction
 export JSXGRAPH_VERSION
 export html_string, html_page, html_fragment, save, save_svg, save_png, save_pdf
@@ -18,6 +18,9 @@ export polygon, regularpolygon, angle, conic, ellipse, parabola, hyperbola
 export functiongraph, curve, implicitcurve, inequality
 export tangent, normal, integral, derivative, riemannsum, slopefield, vectorfield
 export slider, checkbox, input, button, glider, tapemeasure, text, image
+
+# 3D Element constructors
+export view3d, point3d, line3d, curve3d, functiongraph3d, parametricsurface3d
 
 # Composition and transformation elements
 export group, transformation, reflection, rotation, translation

@@ -607,3 +607,163 @@ leg = legend(fg1, fg2; labels=["sin", "cos"])
 ```
 """
 legend(elements...; kwargs...) = _create_element("legend", elements, kwargs)
+
+# --- 3D Elements ---
+
+"""
+$(SIGNATURES)
+
+Create a 3D viewport container with explicit positional arguments.
+
+# Arguments
+- `position`: `[x, y]` bottom-left corner of the viewport on the 2D board
+- `size`: `[width, height]` of the viewport
+- `ranges`: `[[xMin, xMax], [yMin, yMax], [zMin, zMax]]` 3D axis ranges
+
+# Example
+```julia
+v = view3d([-6, -3], [8, 8], [[-5, 5], [-5, 5], [-5, 5]])
+```
+"""
+function view3d(position, size, ranges; kwargs...)
+    attrs = resolve_aliases(kwargs)
+    attrs = convert_color_values(attrs)
+    attrs = apply_theme_defaults("view3d", attrs)
+    return View3D("view3d", Any[position, size, ranges], attrs, AbstractJSXElement[])
+end
+
+"""
+$(SIGNATURES)
+
+Create a 3D viewport with keyword arguments for axis ranges.
+
+# Arguments
+- `position`: `[x, y]` bottom-left corner (default: `[-6, -3]`)
+- `size`: `[width, height]` of the viewport (default: `[8, 8]`)
+- `xlim`: x-axis range (default: `(-5, 5)`)
+- `ylim`: y-axis range (default: `(-5, 5)`)
+- `zlim`: z-axis range (default: `(-5, 5)`)
+
+# Example
+```julia
+v = view3d(xlim=(-3, 3), ylim=(-3, 3), zlim=(-3, 3))
+```
+"""
+function view3d(;
+    position=[-6, -3],
+    size=[8, 8],
+    xlim::Tuple{Real,Real}=(-5, 5),
+    ylim::Tuple{Real,Real}=(-5, 5),
+    zlim::Tuple{Real,Real}=(-5, 5),
+    kwargs...,
+)
+    ranges = [[xlim[1], xlim[2]], [ylim[1], ylim[2]], [zlim[1], zlim[2]]]
+    return view3d(position, size, ranges; kwargs...)
+end
+
+"""
+$(SIGNATURES)
+
+Create a 3D point at coordinates `(x, y, z)`.
+
+# Example
+```julia
+p = point3d(1, 2, 3; size=5, color="red")
+```
+"""
+point3d(x, y, z; kwargs...) = _create_element("point3d", (x, y, z), kwargs)
+
+"""
+$(SIGNATURES)
+
+Create a 3D line through two points.
+
+# Example
+```julia
+p1 = point3d(0, 0, 0)
+p2 = point3d(1, 1, 1)
+l = line3d(p1, p2)
+```
+"""
+line3d(p1, p2; kwargs...) = _create_element("line3d", (p1, p2), kwargs)
+
+"""
+$(SIGNATURES)
+
+Create a 3D parametric curve from `fx(t)`, `fy(t)`, `fz(t)` over `t_range`.
+
+# Arguments
+- `fx`, `fy`, `fz`: functions or expressions for each coordinate
+- `t_range`: parameter range as `[t_start, t_end]`
+
+# Example
+```julia
+# Helix
+c = curve3d(
+    "Math.cos(t)", "Math.sin(t)", "t/(2*Math.PI)",
+    [-6.28, 6.28]
+)
+```
+"""
+function curve3d(fx, fy, fz, t_range; kwargs...)
+    jsfx = _to_jsfunction(fx)
+    jsfy = _to_jsfunction(fy)
+    jsfz = _to_jsfunction(fz)
+    return _create_element("curve3d", (jsfx, jsfy, jsfz, t_range), kwargs)
+end
+
+"""
+$(SIGNATURES)
+
+Create a 3D function graph surface `z = f(x, y)`.
+
+# Arguments
+- `f`: function of two variables (Function, Expr, or String)
+- `xlim`: optional x range as `(xmin, xmax)` (defaults to view range)
+- `ylim`: optional y range as `(ymin, ymax)` (defaults to view range)
+
+# Example
+```julia
+fg = functiongraph3d("Math.sin(x)*Math.cos(y)")
+fg = functiongraph3d("x*y"; xlim=(-3, 3), ylim=(-3, 3))
+```
+"""
+function functiongraph3d(f; xlim=nothing, ylim=nothing, kwargs...)
+    jsf = _to_jsfunction(f, 2)
+    parents = Any[jsf]
+    if xlim !== nothing
+        push!(parents, [xlim[1], xlim[2]])
+    end
+    if ylim !== nothing
+        push!(parents, [ylim[1], ylim[2]])
+    end
+    return _create_element("functiongraph3d", Tuple(parents), kwargs)
+end
+
+"""
+$(SIGNATURES)
+
+Create a 3D parametric surface from `fx(u,v)`, `fy(u,v)`, `fz(u,v)`.
+
+# Arguments
+- `fx`, `fy`, `fz`: functions of two parameters (Function, Expr, or String)
+- `u_range`: parameter u range as `[umin, umax]`
+- `v_range`: parameter v range as `[vmin, vmax]`
+
+# Example
+```julia
+# Sphere
+ps = parametricsurface3d(
+    "Math.sin(u)*Math.cos(v)",
+    "Math.sin(u)*Math.sin(v)",
+    "Math.cos(u)",
+    [0, 3.14], [0, 6.28]
+)
+```
+"""
+function parametricsurface3d(fx, fy, fz, u_range, v_range; kwargs...)
+    jsfx = _to_jsfunction(fx, 2)
+    jsfy = _to_jsfunction(fy, 2)
+    jsfz = _to_jsfunction(fz, 2)
+    return _create_element("parametricsurface3d", (jsfx, jsfy, jsfz, u_range, v_range), kwargs)
+end

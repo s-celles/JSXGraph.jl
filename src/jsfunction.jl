@@ -347,6 +347,14 @@ function collect_jsf_deps(board::Board)
         for parent in elem.parents
             _collect_jsf_from_parent!(result, visited, parent)
         end
+        # Also collect from View3D children
+        if elem isa View3D
+            for child in elem.elements
+                for parent in child.parents
+                    _collect_jsf_from_parent!(result, visited, parent)
+                end
+            end
+        end
     end
     return result
 end

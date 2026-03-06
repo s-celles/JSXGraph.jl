@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- 3D viewport support via `View3D` container type with `do`-block syntax (REQ-3D-001)
+- 3D element constructors: `point3d`, `line3d`, `curve3d`, `functiongraph3d`, `parametricsurface3d` (REQ-3D-002 to REQ-3D-005)
+- `view3d` constructor with keyword arguments (`xlim`, `ylim`, `zlim`) and positional form
+- `push!` support for `View3D` containers
+- 3D gallery documentation page with 15 interactive examples (REQ-3D-006)
+- 3D Elements documentation section in Geometric Elements page
 - Gallery documentation page with 35 categorized examples (REQ-DOC-002)
 
 ### Fixed

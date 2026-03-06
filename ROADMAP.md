@@ -104,6 +104,35 @@ Legend: ✅ Done | 🔧 Partial | ⬜ Not started
 
 ---
 
+## Phase 5 — 3D Support
+
+> 3D viewport, geometric primitives, surfaces, and parametric curves in 3D.
+
+| Requirement | Description | Status |
+|---|---|---|
+| REQ-3D-001 | `View3D` container type with do-block syntax | ✅ |
+| REQ-3D-002 | `point3d`, `line3d` geometric primitives | ✅ |
+| REQ-3D-003 | `curve3d` parametric 3D curves | ✅ |
+| REQ-3D-004 | `functiongraph3d` surface z=f(x,y) | ✅ |
+| REQ-3D-005 | `parametricsurface3d` parametric surfaces | ✅ |
+| REQ-3D-006 | 3D gallery with 15+ examples | ✅ |
+| REQ-3D-010 | `sphere3d` — sphere element | ⬜ |
+| REQ-3D-011 | `circle3d` — circle in 3D space | ⬜ |
+| REQ-3D-012 | `polygon3d` — polygon in 3D space | ⬜ |
+| REQ-3D-013 | `plane3d` — plane in 3D space | ⬜ |
+| REQ-3D-014 | `vectorfield3d` — 3D vector field | ⬜ |
+| REQ-3D-015 | `intersectionline3d` — intersection of surfaces | ⬜ |
+| REQ-3D-016 | `intersectioncircle3d` — intersection circle | ⬜ |
+| REQ-3D-017 | `mesh3d` — discrete mesh surface | ⬜ |
+| REQ-3D-018 | `text3d` — text positioned in 3D | ⬜ |
+| REQ-3D-019 | `polyhedron3d` / `face3d` — 3D solids | ⬜ |
+| REQ-3D-020 | 3D theming support | ⬜ |
+| REQ-3D-021 | 3D element attribute aliases | ⬜ |
+
+**Phase 5 status: ~35% complete (core infrastructure + 6 constructors)**
+
+---
+
 ## Cross-Cutting Requirements
 
 | Requirement | Description | Status |
@@ -137,4 +166,6 @@ Legend: ✅ Done | 🔧 Partial | ⬜ Not started
 | **0.7.0** | Theming | `set_theme!`, `with_theme`, 3 built-in themes |
 | **0.8.0** | Convenience API | `scatter`, `parametric`, `implicit`, `polar`, `do`-block |
 | **0.9.0** | Ecosystem | Tables.jl ingestion, Unitful.jl labels, recipe system |
-| **0.10.0** | Pre-release | General Registry, full docs gallery, ≥ 80% coverage |
+| **0.10.0** | 3D Support | `View3D`, `point3d`, `curve3d`, `functiongraph3d`, `parametricsurface3d` |
+| **0.11.0** | 3D Extended | `sphere3d`, `polygon3d`, `vectorfield3d`, `mesh3d`, 3D theming |
+| **1.0.0** | Stable Release | General Registry, full docs gallery, ≥ 80% coverage |

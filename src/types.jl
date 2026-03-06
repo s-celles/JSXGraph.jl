@@ -100,3 +100,25 @@ function Board(
 
     return Board(id, AbstractJSXElement[], options)
 end
+
+"""
+$(TYPEDEF)
+
+Represents a JSXGraph 3D viewport that can contain 3D elements.
+
+A `View3D` is added to a [`Board`](@ref) like any other element, but 3D elements
+(`point3d`, `line3d`, `curve3d`, etc.) are created on the view rather than
+directly on the board.
+
+$(TYPEDFIELDS)
+"""
+mutable struct View3D <: AbstractJSXElement
+    "Always \"view3d\""
+    type_name::String
+    "Positional arguments: [position, size, ranges]"
+    parents::Vector{Any}
+    "Visual and behavioral attributes"
+    attributes::Dict{String,Any}
+    "3D elements contained in this view"
+    elements::Vector{AbstractJSXElement}
+end

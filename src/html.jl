@@ -58,16 +58,38 @@ function render_board_js(io::IO, board::Board)
     for (i, elem) in enumerate(board.elements)
         var_name = "el_" * lpad(i, 3, '0')
         elem_ids[objectid(elem)] = var_name
+        if elem isa View3D
+            for (j, child) in enumerate(elem.elements)
+                child_var = var_name * "_" * lpad(j, 3, '0')
+                elem_ids[objectid(child)] = child_var
+            end
+        end
     end
     # Render each element
     for (i, elem) in enumerate(board.elements)
         var_name = "el_" * lpad(i, 3, '0')
         parents_js = join([parent_to_js(p, elem_ids) for p in elem.parents], ",")
         attrs_js = attrs_to_js(elem.attributes)
-        print(
-            io,
-            "var $(var_name) = board_$(board_var).create('$(elem.type_name)', [$(parents_js)], $(attrs_js));\n",
-        )
+        if elem isa View3D
+            print(
+                io,
+                "var $(var_name) = board_$(board_var).create('view3d', [$(parents_js)], $(attrs_js));\n",
+            )
+            for (j, child) in enumerate(elem.elements)
+                child_var = var_name * "_" * lpad(j, 3, '0')
+                child_parents_js = join([parent_to_js(p, elem_ids) for p in child.parents], ",")
+                child_attrs_js = attrs_to_js(child.attributes)
+                print(
+                    io,
+                    "var $(child_var) = $(var_name).create('$(child.type_name)', [$(child_parents_js)], $(child_attrs_js));\n",
+                )
+            end
+        else
+            print(
+                io,
+                "var $(var_name) = board_$(board_var).create('$(elem.type_name)', [$(parents_js)], $(attrs_js));\n",
+            )
+        end
     end
 end
 

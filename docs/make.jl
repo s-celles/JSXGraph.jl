@@ -18,6 +18,7 @@ makedocs(;
         "Home" => "index.md",
         "Getting Started" => "tutorial.md",
         "Gallery" => "gallery.md",
+        "3D Gallery" => "gallery3d.md",
         "HTML Generation" => "html_generation.md",
         "Static Export" => "svg_export.md",
         "Display Protocol" => "display.md",

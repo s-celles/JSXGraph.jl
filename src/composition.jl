@@ -20,6 +20,23 @@ end
 """
 $(SIGNATURES)
 
+Add one or more 3D elements to a [`View3D`](@ref) (mutating). Returns the view.
+"""
+function Base.push!(view::View3D, elem::AbstractJSXElement)
+    push!(view.elements, elem)
+    return view
+end
+
+function Base.push!(view::View3D, elems::AbstractJSXElement...)
+    for elem in elems
+        push!(view.elements, elem)
+    end
+    return view
+end
+
+"""
+$(SIGNATURES)
+
 Create a new board with the element added (non-mutating).
 
 The original board is unchanged.
@@ -64,6 +81,31 @@ function board(f::Function, id::String=""; kwargs...)
     b = Board(id; kwargs...)
     f(b)
     return b
+end
+
+"""
+$(SIGNATURES)
+
+Create a 3D viewport using Julia's `do`-block syntax.
+
+# Examples
+```julia
+v = view3d(xlim=(-5, 5), ylim=(-5, 5), zlim=(-5, 5)) do v
+    push!(v, point3d(1, 2, 3))
+    push!(v, functiongraph3d("Math.sin(x)*Math.cos(y)"))
+end
+```
+"""
+function view3d(f::Function; kwargs...)
+    v = view3d(; kwargs...)
+    f(v)
+    return v
+end
+
+function view3d(f::Function, position, size, ranges; kwargs...)
+    v = view3d(position, size, ranges; kwargs...)
+    f(v)
+    return v
 end
 
 """

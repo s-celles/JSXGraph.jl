@@ -443,3 +443,42 @@ All three functions are emitted in the correct order: `base`, then `double`,
 then the anonymous function used by the element.
 
 See [`@jsf`](@ref), [`@named_jsf`](@ref), [`named_jsf`](@ref), [`with_deps`](@ref) in the API Reference.
+
+## 3D Elements
+
+JSXGraph.jl supports the JSXGraph 3D module via the [`View3D`](@ref) container
+and a set of 3D element constructors. All 3D elements must be added to a `View3D`
+(not directly to a `Board`).
+
+### View3D — The 3D Viewport
+
+A `View3D` is created on a board and serves as the container for all 3D elements:
+
+```julia
+using JSXGraph
+
+b = board("my3d", xlim=(-8, 8), ylim=(-8, 8)) do b
+    v = view3d(xlim=(-5, 5), ylim=(-5, 5), zlim=(-5, 5)) do v
+        push!(v, point3d(1, 2, 3; size=5, color="red"))
+    end
+    push!(b, v)
+end
+```
+
+The `view3d` constructor accepts:
+- Keyword form: `view3d(; xlim, ylim, zlim, position, size, ...)`
+- Positional form: `view3d(position, size, ranges; ...)`
+- Do-block syntax for both forms
+
+### 3D Element Constructors
+
+| Constructor | Description |
+|---|---|
+| `point3d(x, y, z)` | 3D point |
+| `line3d(p1, p2)` | 3D line through two points |
+| `curve3d(fx, fy, fz, t_range)` | Parametric curve in 3D |
+| `functiongraph3d(f)` | Surface `z = f(x, y)` |
+| `parametricsurface3d(fx, fy, fz, u_range, v_range)` | Parametric surface |
+
+For interactive 3D examples, see the [3D Gallery](@ref "3D Gallery").
+Full API documentation is available in the [API Reference](api.md).
