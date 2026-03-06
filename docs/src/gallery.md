@@ -250,7 +250,34 @@ push!(b, circle(o, s; strokeColor="blue", strokeWidth=2))
 b
 ```
 
-### 21. Draggable Points
+### 21. Slider-Controlled Circle and Point
+
+```@example gallery
+b = Board("slider_circle", xlim=(-6, 6), ylim=(-6, 6))
+r = slider([-5, 5], [1, 5], [1, 3, 5]; name="r")
+o = point(0, 0; name="O", size=3)
+c = circle(o, r; strokeColor="steelblue", strokeWidth=2, fillColor="steelblue", fillOpacity=0.1)
+g = glider(3, 0, c; name="P", size=4, color="red")
+push!(b, r); push!(b, o); push!(b, c); push!(b, g)
+push!(b, segment(o, g; strokeColor="gray", dash=2))
+b
+```
+
+### 22. Regular Polygon with Slider Sides
+
+```@example gallery
+b = Board("slider_polygon", xlim=(-5, 5), ylim=(-5, 5))
+n = slider([-4, 4], [0, 4], [3, 5, 12]; name="n", snapWidth=1)
+p1 = point(-1, 0; visible=false)
+p2 = point(1, 0; visible=false)
+push!(b, n); push!(b, p1); push!(b, p2)
+push!(b, regularpolygon(p1, p2, n;
+    fillColor="lightblue", fillOpacity=0.3, strokeColor="navy"
+))
+b
+```
+
+### 23. Draggable Points
 
 ```@example gallery
 b = board("drag", xlim=(-5, 5), ylim=(-5, 5)) do b
@@ -263,7 +290,7 @@ end
 b
 ```
 
-### 22. Glider on Curve
+### 24. Glider on Curve
 
 ```@example gallery
 b = Board("glider_ex", xlim=(-5, 5), ylim=(-5, 5))
@@ -277,7 +304,7 @@ push!(b, segment(o, g; strokeColor="orange", dash=2))
 b
 ```
 
-### 23. Text Annotation
+### 25. Text Annotation
 
 ```@example gallery
 b = Board("text_ex", xlim=(-5, 5), ylim=(-5, 5))
@@ -287,7 +314,7 @@ push!(b, point(0, 0; name="Origin", color="red"))
 b
 ```
 
-### 24. Image on Board
+### 26. Image on Board
 
 ```@example gallery
 b = Board("image_ex", xlim=(-5, 5), ylim=(-5, 5))
@@ -300,7 +327,7 @@ b
 
 ## Data Visualization
 
-### 25. Scatter Plot
+### 27. Scatter Plot
 
 ```@example gallery
 x = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0]
@@ -309,14 +336,14 @@ b = scatter(x, y; color="steelblue", size=4)
 b
 ```
 
-### 26. Function Plot with Domain
+### 28. Function Plot with Domain
 
 ```@example gallery
 b = plot(@jsf(x -> x^2 - 4), (-4, 4); strokeColor="darkgreen", strokeWidth=2)
 b
 ```
 
-### 27. Multiple Data Series
+### 29. Multiple Data Series
 
 ```@example gallery
 x = collect(0.0:0.5:6.0)
@@ -331,7 +358,7 @@ b
 
 ## Composition & Transforms
 
-### 28. Do-Block Syntax
+### 30. Do-Block Syntax
 
 ```@example gallery
 b = board("doblock", xlim=(-5, 5), ylim=(-5, 5)) do b
@@ -347,7 +374,7 @@ end
 b
 ```
 
-### 29. Board Composition with `+`
+### 31. Board Composition with `+`
 
 ```@example gallery
 b = Board("compose", xlim=(-5, 5), ylim=(-5, 5))
@@ -356,7 +383,7 @@ b = b + p + circle(p, 3; strokeColor="blue") + functiongraph("Math.sin(x)"; stro
 b
 ```
 
-### 30. Grid and Axes
+### 32. Grid and Axes
 
 ```@example gallery
 b = Board("grid_axes", xlim=(-5, 5), ylim=(-5, 5))
@@ -370,7 +397,7 @@ b
 
 ## Theming
 
-### 31. Dark Theme
+### 33. Dark Theme
 
 ```@example gallery
 b = with_theme(THEME_DARK) do
@@ -382,7 +409,7 @@ end
 b
 ```
 
-### 32. Publication Theme
+### 34. Publication Theme
 
 ```@example gallery
 b = with_theme(THEME_PUBLICATION) do
@@ -396,7 +423,7 @@ b
 
 ## Advanced Examples
 
-### 33. Slope Field
+### 35. Slope Field
 
 ```@example gallery
 b = Board("slope", xlim=(-5, 5), ylim=(-5, 5))
@@ -405,7 +432,7 @@ push!(b, functiongraph("x - 1 + Math.exp(-x)"; strokeColor="red", strokeWidth=2)
 b
 ```
 
-### 34. Inequality Region
+### 36. Inequality Region
 
 ```@example gallery
 b = Board("ineq", xlim=(-5, 5), ylim=(-5, 5))
@@ -415,7 +442,7 @@ push!(b, inequality(f; fillColor="lightblue", fillOpacity=0.3, inverse=false))
 b
 ```
 
-### 35. JavaScript Function Bridge
+### 37. JavaScript Function Bridge
 
 ```@example gallery
 b = Board("jsf_ex", xlim=(-5, 5), ylim=(-5, 5))

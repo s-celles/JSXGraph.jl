@@ -90,7 +90,7 @@ Legend: ✅ Done | 🔧 Partial | ⬜ Not started
 | REQ-INT-010 | WebSocket bidirectional communication (optional) | ⬜ |
 | REQ-INT-011 | Observables.jl live updates (optional) | ✅ |
 | REQ-DOC-002 | Gallery with 30+ categorized examples | ✅ |
-| REQ-DOC-003 | Live interactive rendering in docs | ⬜ |
+| REQ-DOC-003 | Live interactive rendering in docs | ✅ |
 | REQ-QA-001 | ≥ 80% code coverage in CI | ✅ (93.7%) |
 | REQ-QA-002 | HTML snapshot tests | ✅ |
 | REQ-QA-003 | CI pipeline: tests + lint + docs on PR | ✅ |
