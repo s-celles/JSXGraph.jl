@@ -35,6 +35,12 @@ p = point(1, 2; strokeColor="red", strokeWidth=3, fillColor="blue")
 | `ms` | `size` | Short |
 | `label` | `name` | Full |
 | `legend` | `withLabel` | Full |
+| `surfacecolor` | `fillColor` | Full |
+| `surfaceopacity` | `fillOpacity` | Full |
+| `wireframecolor` | `strokeColor` | Full |
+| `wireframewidth` | `strokeWidth` | Full |
+| `meshcolor` | `meshColor` | Full |
+| `meshwidth` | `meshWidth` | Full |
 
 ## Precedence Rules
 
@@ -103,6 +109,30 @@ p = point(1, 2; color=HSL(120, 1.0, 0.5))
 ```
 
 The conversion works with all Plots.jl-compatible aliases and across all element types.
+
+## 3D Element Aliases
+
+For 3D surfaces and meshes, additional aliases provide domain-specific names:
+
+```julia
+# Surface color and opacity
+fg = functiongraph3d("Math.sin(x)*y"; surfacecolor="steelblue", surfaceopacity=0.5)
+
+# Wireframe styling
+ps = parametricsurface3d("cos(u)*cos(v)", "sin(u)*cos(v)", "sin(v)",
+    [0, 6.28], [0, 3.14]; wireframecolor="navy", wireframewidth=2)
+
+# Mesh grid styling
+m = mesh3d([0,0,0], [1,0,0], [0,1,0], [-3,3], [-3,3];
+    meshcolor="gray", meshwidth=1)
+```
+
+All existing aliases (`color`, `linewidth`, `opacity`, etc.) also work with 3D elements:
+
+```julia
+p = point3d(1, 2, 3; color="red", markersize=8)
+l = line3d(point3d(0,0,0), point3d(1,1,1); linewidth=3, alpha=0.7)
+```
 
 ## Works Across All Element Types
 

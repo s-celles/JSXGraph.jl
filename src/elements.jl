@@ -96,6 +96,13 @@ function parent_to_js(x::JSFunction, elem_ids::Dict)
     return x.code
 end
 
+# Fallback: unwrap via resolve_value and re-dispatch (enables Observable support)
+function parent_to_js(x, elem_ids::Dict)
+    resolved = resolve_value(x)
+    resolved === x && error("No parent_to_js method for $(typeof(x))")
+    return parent_to_js(resolved, elem_ids)
+end
+
 """
 $(SIGNATURES)
 
@@ -800,3 +807,207 @@ function vectorfield3d(fx, fy, fz, xrange, yrange, zrange; kwargs...)
     funcs = [jsfx, jsfy, jsfz]
     return _create_element("vectorfield3d", (funcs, xrange, yrange, zrange), kwargs)
 end
+
+"""
+$(SIGNATURES)
+
+Create a 3D sphere from a center point and radius (or a second point on the surface).
+
+# Arguments
+- `center`: center point (Point3D element)
+- `radius_or_point`: radius (Number) or a Point3D on the surface
+
+# Example
+```julia
+c = point3d(0, 0, 0)
+s = sphere3d(c, 2.0; fillColor="blue", fillOpacity=0.3)
+```
+"""
+sphere3d(center, radius_or_point; kwargs...) =
+    _create_element("sphere3d", (center, radius_or_point), kwargs)
+
+"""
+$(SIGNATURES)
+
+Create a 3D circle from a center point, normal vector, and radius.
+
+# Arguments
+- `center`: center point (Point3D element)
+- `normal`: normal vector as `[0, nx, ny, nz]` (homogeneous coordinates)
+- `radius`: circle radius (Number)
+
+# Example
+```julia
+c = point3d(0, 0, 0)
+circ = circle3d(c, [0, 0, 0, 1], 2.0; strokeColor="red")
+```
+"""
+circle3d(center, normal, radius; kwargs...) =
+    _create_element("circle3d", (center, normal, radius), kwargs)
+
+"""
+$(SIGNATURES)
+
+Create a 3D polygon from a sequence of 3D points.
+
+# Arguments
+- `points...`: three or more Point3D elements
+
+# Example
+```julia
+p1 = point3d(0, 0, 0)
+p2 = point3d(1, 0, 0)
+p3 = point3d(1, 1, 0)
+p4 = point3d(0, 1, 0)
+poly = polygon3d(p1, p2, p3, p4; fillColor="yellow", fillOpacity=0.3)
+```
+"""
+polygon3d(points...; kwargs...) = _create_element("polygon3d", points, kwargs)
+
+"""
+$(SIGNATURES)
+
+Create a 3D plane from a point and two direction vectors.
+
+# Arguments
+- `point`: a point on the plane (Point3D element)
+- `dir1`: first spanning direction vector `[dx, dy, dz]`
+- `dir2`: second spanning direction vector `[dx, dy, dz]`
+- `range_u`: optional parameter range for first direction (default: unbounded)
+- `range_v`: optional parameter range for second direction (default: unbounded)
+
+# Example
+```julia
+p = point3d(0, 0, 0)
+plane = plane3d(p, [1, 0, 0], [0, 1, 0], [-2, 2], [-2, 2];
+    fillColor="blue", fillOpacity=0.2)
+```
+"""
+function plane3d(point, dir1, dir2; range_u=nothing, range_v=nothing, kwargs...)
+    parents = Any[point, dir1, dir2]
+    if range_u !== nothing
+        push!(parents, collect(range_u))
+    end
+    if range_v !== nothing
+        push!(parents, collect(range_v))
+    end
+    return _create_element("plane3d", Tuple(parents), kwargs)
+end
+
+"""
+$(SIGNATURES)
+
+Create a 3D plane from three points.
+
+# Example
+```julia
+p1 = point3d(0, 0, 0)
+p2 = point3d(1, 0, 0)
+p3 = point3d(0, 1, 0)
+plane = plane3d(p1, p2, p3; fillColor="green", fillOpacity=0.2)
+```
+"""
+function plane3d(p1::JSXElement, p2::JSXElement, p3::JSXElement; kwargs...)
+    return _create_element("plane3d", (p1, p2, p3), pairs((; kwargs..., threePoints=true)))
+end
+
+"""
+$(SIGNATURES)
+
+Create a 3D intersection line of two planes.
+
+# Arguments
+- `plane1`: first Plane3D element
+- `plane2`: second Plane3D element
+
+# Example
+```julia
+p = point3d(0, 0, 0)
+pl1 = plane3d(p, [1, 0, 0], [0, 1, 0]; range_u=(-3, 3), range_v=(-3, 3))
+pl2 = plane3d(p, [1, 0, 1], [0, 1, 0]; range_u=(-3, 3), range_v=(-3, 3))
+il = intersectionline3d(pl1, pl2; strokeColor="red")
+```
+"""
+intersectionline3d(plane1, plane2; kwargs...) =
+    _create_element("intersectionline3d", (plane1, plane2), kwargs)
+
+"""
+$(SIGNATURES)
+
+Create a 3D intersection circle of two spheres or a sphere and a plane.
+
+# Arguments
+- `el1`: first element (Sphere3D or Plane3D)
+- `el2`: second element (Sphere3D or Plane3D)
+
+# Example
+```julia
+c1 = point3d(-1, 0, 0)
+c2 = point3d(1, 0, 0)
+s1 = sphere3d(c1, 2.0)
+s2 = sphere3d(c2, 2.0)
+ic = intersectioncircle3d(s1, s2; strokeColor="purple")
+```
+"""
+intersectioncircle3d(el1, el2; kwargs...) =
+    _create_element("intersectioncircle3d", (el1, el2), kwargs)
+
+"""
+$(SIGNATURES)
+
+Create a 3D text label at position `(x, y, z)`.
+
+# Arguments
+- `x`, `y`, `z`: 3D coordinates for the text position
+- `txt`: text content (String)
+
+# Example
+```julia
+t = text3d(1, 2, 3, "Hello 3D"; fontSize=20)
+```
+"""
+text3d(x, y, z, txt; kwargs...) =
+    _create_element("text3d", (x, y, z, txt), kwargs)
+
+"""
+$(SIGNATURES)
+
+Create a 3D wireframe mesh grid.
+
+# Arguments
+- `point`: origin point as `[x, y, z]` array or Point3D element
+- `dir1`: first spanning direction vector `[dx, dy, dz]`
+- `dir2`: second spanning direction vector `[dx, dy, dz]`
+- `range1`: range along first direction `[min, max]`
+- `range2`: range along second direction `[min, max]`
+
+# Example
+```julia
+m = mesh3d([0, 0, 0], [1, 0, 0], [0, 1, 0], [-3, 3], [-3, 3];
+    stepWidthU=1, stepWidthV=1)
+```
+"""
+mesh3d(point, dir1, dir2, range1, range2; kwargs...) =
+    _create_element("mesh3d", (point, dir1, dir2, range1, range2), kwargs)
+
+"""
+$(SIGNATURES)
+
+Create a 3D polyhedron from vertices and face definitions.
+
+JSXGraph renders each face with shading based on the camera angle.
+
+# Arguments
+- `vertices`: array of `[x, y, z]` coordinate arrays, or Point3D elements
+- `faces`: array of faces, where each face is an array of vertex indices (0-based)
+
+# Example
+```julia
+# Tetrahedron
+verts = [[0, 0, 0], [2, 0, 0], [1, 2, 0], [1, 1, 2]]
+faces = [[0, 1, 2], [0, 1, 3], [1, 2, 3], [0, 2, 3]]
+p = polyhedron3d(verts, faces; fillOpacity=0.8)
+```
+"""
+polyhedron3d(vertices, faces; kwargs...) =
+    _create_element("polyhedron3d", (vertices, faces), kwargs)

@@ -14,8 +14,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `view3d` constructor with keyword arguments (`xlim`, `ylim`, `zlim`) and positional form
 - `push!` support for `View3D` containers
 - `vectorfield3d` constructor for 3D vector fields (REQ-3D-014)
-- 3D gallery documentation page with 18 interactive examples (REQ-3D-006)
+- `sphere3d`, `circle3d`, `polygon3d`, `plane3d` constructors for 3D solid geometry (REQ-3D-010 to REQ-3D-013)
+- `intersectionline3d`, `intersectioncircle3d` constructors for 3D intersections (REQ-3D-015, REQ-3D-016)
+- `text3d` constructor for 3D text labels (REQ-3D-018)
+- `mesh3d` constructor for 3D wireframe mesh grids (REQ-3D-017)
+- `polyhedron3d` constructor for 3D solids with shaded faces (REQ-3D-019)
+- 3D theming support: `THEME_DARK` and `THEME_PUBLICATION` include defaults for all 3D element types (REQ-3D-020)
+- 3D attribute aliases: `surfacecolor`, `surfaceopacity`, `wireframecolor`, `wireframewidth`, `meshcolor`, `meshwidth` (REQ-3D-021)
+- 3D gallery documentation page with 28 interactive examples (REQ-3D-006)
 - 3D Elements documentation section in Geometric Elements page
+- Observables.jl integration: `Observable` values as element parents and attributes are automatically unwrapped at render time (REQ-INT-011)
 - Gallery documentation page with 35 categorized examples (REQ-DOC-002)
 
 ### Fixed

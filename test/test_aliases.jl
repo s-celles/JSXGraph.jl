@@ -142,3 +142,43 @@ end
     p6 = point(1, 2; col="red", color="blue")
     @test p6.attributes["strokeColor"] == "blue"
 end
+
+@testset "3D Element Aliases" begin
+    # surfacecolor → fillColor
+    fg = functiongraph3d("x * y"; surfacecolor="blue")
+    @test fg.attributes["fillColor"] == "blue"
+    @test !haskey(fg.attributes, "surfacecolor")
+
+    # surfaceopacity → fillOpacity
+    ps = parametricsurface3d("cos(u)*cos(v)", "sin(u)*cos(v)", "sin(v)", [0, 6.28], [0, 3.14];
+        surfaceopacity=0.5)
+    @test ps.attributes["fillOpacity"] == 0.5
+
+    # wireframecolor → strokeColor
+    fg2 = functiongraph3d("x + y"; wireframecolor="red")
+    @test fg2.attributes["strokeColor"] == "red"
+
+    # wireframewidth → strokeWidth
+    fg3 = functiongraph3d("x * y"; wireframewidth=3)
+    @test fg3.attributes["strokeWidth"] == 3
+
+    # meshcolor → meshColor
+    m = mesh3d([0, 0, 0], [1, 0, 0], [0, 1, 0], [-3, 3], [-3, 3]; meshcolor="green")
+    @test m.attributes["meshColor"] == "green"
+
+    # meshwidth → meshWidth
+    m2 = mesh3d([0, 0, 0], [1, 0, 0], [0, 1, 0], [-3, 3], [-3, 3]; meshwidth=2)
+    @test m2.attributes["meshWidth"] == 2
+
+    # Existing aliases still work on 3D elements
+    p = point3d(1, 2, 3; color="red", markersize=8)
+    @test p.attributes["strokeColor"] == "red"
+    @test p.attributes["size"] == 8
+
+    l = line3d(point3d(0, 0, 0), point3d(1, 1, 1); linewidth=3)
+    @test l.attributes["strokeWidth"] == 3
+
+    # Native JSXGraph name wins over 3D alias
+    fg4 = functiongraph3d("x * y"; surfacecolor="blue", fillColor="red")
+    @test fg4.attributes["fillColor"] == "red"
+end

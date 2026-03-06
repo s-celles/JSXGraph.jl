@@ -260,4 +260,262 @@
         html = html_string(b)
         @test contains(html, "create('parametricsurface3d'")
     end
+
+    @testset "sphere3d with radius" begin
+        c = point3d(0, 0, 0)
+        s = sphere3d(c, 2.0)
+        @test s isa JSXElement
+        @test s.type_name == "sphere3d"
+        @test length(s.parents) == 2
+        @test s.parents[2] == 2.0
+    end
+
+    @testset "sphere3d with point on surface" begin
+        c = point3d(0, 0, 0)
+        p = point3d(1, 1, 1)
+        s = sphere3d(c, p)
+        @test s.type_name == "sphere3d"
+        @test s.parents[2] isa JSXElement
+    end
+
+    @testset "sphere3d rendering" begin
+        b = Board("test3d_sphere"; xlim=(-8, 8), ylim=(-8, 8))
+        v = view3d(xlim=(-5, 5), ylim=(-5, 5), zlim=(-5, 5)) do v
+            c = point3d(0, 0, 0)
+            push!(v, c)
+            push!(v, sphere3d(c, 2.0; fillColor="blue", fillOpacity=0.3))
+        end
+        push!(b, v)
+        html = html_string(b)
+        @test contains(html, "create('sphere3d'")
+    end
+
+    @testset "circle3d" begin
+        c = point3d(0, 0, 0)
+        circ = circle3d(c, [0, 0, 0, 1], 2.0)
+        @test circ isa JSXElement
+        @test circ.type_name == "circle3d"
+        @test length(circ.parents) == 3
+        @test circ.parents[2] == [0, 0, 0, 1]
+        @test circ.parents[3] == 2.0
+    end
+
+    @testset "circle3d rendering" begin
+        b = Board("test3d_circle"; xlim=(-8, 8), ylim=(-8, 8))
+        v = view3d(xlim=(-5, 5), ylim=(-5, 5), zlim=(-5, 5)) do v
+            c = point3d(0, 0, 0)
+            push!(v, c)
+            push!(v, circle3d(c, [0, 0, 0, 1], 2.0; strokeColor="red"))
+        end
+        push!(b, v)
+        html = html_string(b)
+        @test contains(html, "create('circle3d'")
+    end
+
+    @testset "polygon3d" begin
+        p1 = point3d(0, 0, 0)
+        p2 = point3d(1, 0, 0)
+        p3 = point3d(1, 1, 0)
+        poly = polygon3d(p1, p2, p3)
+        @test poly isa JSXElement
+        @test poly.type_name == "polygon3d"
+        @test length(poly.parents) == 3
+    end
+
+    @testset "polygon3d with 4 vertices" begin
+        p1 = point3d(0, 0, 0)
+        p2 = point3d(1, 0, 0)
+        p3 = point3d(1, 1, 0)
+        p4 = point3d(0, 1, 0)
+        poly = polygon3d(p1, p2, p3, p4)
+        @test length(poly.parents) == 4
+    end
+
+    @testset "polygon3d rendering" begin
+        b = Board("test3d_polygon"; xlim=(-8, 8), ylim=(-8, 8))
+        v = view3d(xlim=(-5, 5), ylim=(-5, 5), zlim=(-5, 5)) do v
+            p1 = point3d(0, 0, 0)
+            p2 = point3d(1, 0, 0)
+            p3 = point3d(1, 1, 0)
+            push!(v, p1, p2, p3)
+            push!(v, polygon3d(p1, p2, p3; fillColor="yellow"))
+        end
+        push!(b, v)
+        html = html_string(b)
+        @test contains(html, "create('polygon3d'")
+    end
+
+    @testset "plane3d with directions" begin
+        p = point3d(0, 0, 0)
+        pl = plane3d(p, [1, 0, 0], [0, 1, 0])
+        @test pl isa JSXElement
+        @test pl.type_name == "plane3d"
+        @test length(pl.parents) == 3
+    end
+
+    @testset "plane3d with ranges" begin
+        p = point3d(0, 0, 0)
+        pl = plane3d(p, [1, 0, 0], [0, 1, 0]; range_u=(-2, 2), range_v=(-2, 2))
+        @test pl.type_name == "plane3d"
+        @test length(pl.parents) == 5
+        @test pl.parents[4] == [-2, 2]
+        @test pl.parents[5] == [-2, 2]
+    end
+
+    @testset "plane3d three points" begin
+        p1 = point3d(0, 0, 0)
+        p2 = point3d(1, 0, 0)
+        p3 = point3d(0, 1, 0)
+        pl = plane3d(p1, p2, p3)
+        @test pl isa JSXElement
+        @test pl.type_name == "plane3d"
+        @test length(pl.parents) == 3
+        @test pl.attributes["threePoints"] == true
+    end
+
+    @testset "plane3d rendering" begin
+        b = Board("test3d_plane"; xlim=(-8, 8), ylim=(-8, 8))
+        v = view3d(xlim=(-5, 5), ylim=(-5, 5), zlim=(-5, 5)) do v
+            p = point3d(0, 0, 0)
+            push!(v, p)
+            push!(v, plane3d(p, [1, 0, 0], [0, 1, 0]; range_u=(-2, 2), range_v=(-2, 2),
+                fillColor="blue", fillOpacity=0.2))
+        end
+        push!(b, v)
+        html = html_string(b)
+        @test contains(html, "create('plane3d'")
+    end
+
+    @testset "intersectionline3d" begin
+        p = point3d(0, 0, 0)
+        pl1 = plane3d(p, [1, 0, 0], [0, 1, 0]; range_u=(-3, 3), range_v=(-3, 3))
+        pl2 = plane3d(p, [1, 0, 1], [0, 1, 0]; range_u=(-3, 3), range_v=(-3, 3))
+        il = intersectionline3d(pl1, pl2)
+        @test il isa JSXElement
+        @test il.type_name == "intersectionline3d"
+        @test length(il.parents) == 2
+    end
+
+    @testset "intersectionline3d rendering" begin
+        b = Board("test3d_intline"; xlim=(-8, 8), ylim=(-8, 8))
+        v = view3d(xlim=(-5, 5), ylim=(-5, 5), zlim=(-5, 5)) do v
+            p = point3d(0, 0, 0)
+            push!(v, p)
+            pl1 = plane3d(p, [1, 0, 0], [0, 1, 0]; range_u=(-3, 3), range_v=(-3, 3))
+            pl2 = plane3d(p, [1, 0, 1], [0, 1, 0]; range_u=(-3, 3), range_v=(-3, 3))
+            push!(v, pl1)
+            push!(v, pl2)
+            push!(v, intersectionline3d(pl1, pl2; strokeColor="red"))
+        end
+        push!(b, v)
+        html = html_string(b)
+        @test contains(html, "create('intersectionline3d'")
+    end
+
+    @testset "intersectioncircle3d" begin
+        c1 = point3d(-1, 0, 0)
+        c2 = point3d(1, 0, 0)
+        s1 = sphere3d(c1, 2.0)
+        s2 = sphere3d(c2, 2.0)
+        ic = intersectioncircle3d(s1, s2)
+        @test ic isa JSXElement
+        @test ic.type_name == "intersectioncircle3d"
+        @test length(ic.parents) == 2
+    end
+
+    @testset "intersectioncircle3d rendering" begin
+        b = Board("test3d_intcirc"; xlim=(-8, 8), ylim=(-8, 8))
+        v = view3d(xlim=(-5, 5), ylim=(-5, 5), zlim=(-5, 5)) do v
+            c1 = point3d(-1, 0, 0)
+            c2 = point3d(1, 0, 0)
+            push!(v, c1, c2)
+            s1 = sphere3d(c1, 2.0)
+            s2 = sphere3d(c2, 2.0)
+            push!(v, s1, s2)
+            push!(v, intersectioncircle3d(s1, s2; strokeColor="purple"))
+        end
+        push!(b, v)
+        html = html_string(b)
+        @test contains(html, "create('intersectioncircle3d'")
+    end
+
+    @testset "text3d" begin
+        t = text3d(1, 2, 3, "Hello")
+        @test t isa JSXElement
+        @test t.type_name == "text3d"
+        @test length(t.parents) == 4
+        @test t.parents[4] == "Hello"
+    end
+
+    @testset "text3d with attributes" begin
+        t = text3d(0, 0, 0, "Label"; fontSize=20)
+        @test t.attributes["fontSize"] == 20
+    end
+
+    @testset "text3d rendering" begin
+        b = Board("test3d_text"; xlim=(-8, 8), ylim=(-8, 8))
+        v = view3d(xlim=(-5, 5), ylim=(-5, 5), zlim=(-5, 5)) do v
+            push!(v, text3d(1, 2, 3, "Hello 3D"; fontSize=20))
+        end
+        push!(b, v)
+        html = html_string(b)
+        @test contains(html, "create('text3d'")
+        @test contains(html, "Hello 3D")
+    end
+
+    @testset "mesh3d" begin
+        m = mesh3d([0, 0, 0], [1, 0, 0], [0, 1, 0], [-3, 3], [-3, 3])
+        @test m isa JSXElement
+        @test m.type_name == "mesh3d"
+        @test length(m.parents) == 5
+        @test m.parents[1] == [0, 0, 0]
+        @test m.parents[4] == [-3, 3]
+    end
+
+    @testset "mesh3d with attributes" begin
+        m = mesh3d([0, 0, 0], [1, 0, 0], [0, 1, 0], [-2, 2], [-2, 2];
+            stepWidthU=0.5, stepWidthV=0.5)
+        @test m.attributes["stepWidthU"] == 0.5
+    end
+
+    @testset "mesh3d rendering" begin
+        b = Board("test3d_mesh"; xlim=(-8, 8), ylim=(-8, 8))
+        v = view3d(xlim=(-5, 5), ylim=(-5, 5), zlim=(-5, 5)) do v
+            push!(v, mesh3d([0, 0, 0], [1, 0, 0], [0, 1, 0], [-3, 3], [-3, 3];
+                stepWidthU=1, stepWidthV=1))
+        end
+        push!(b, v)
+        html = html_string(b)
+        @test contains(html, "create('mesh3d'")
+    end
+
+    @testset "polyhedron3d tetrahedron" begin
+        verts = [[0, 0, 0], [2, 0, 0], [1, 2, 0], [1, 1, 2]]
+        faces = [[0, 1, 2], [0, 1, 3], [1, 2, 3], [0, 2, 3]]
+        p = polyhedron3d(verts, faces)
+        @test p isa JSXElement
+        @test p.type_name == "polyhedron3d"
+        @test length(p.parents) == 2
+        @test p.parents[1] == verts
+        @test p.parents[2] == faces
+    end
+
+    @testset "polyhedron3d with attributes" begin
+        verts = [[0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1]]
+        faces = [[0, 1, 2], [0, 1, 3], [1, 2, 3], [0, 2, 3]]
+        p = polyhedron3d(verts, faces; fillOpacity=0.8)
+        @test p.attributes["fillOpacity"] == 0.8
+    end
+
+    @testset "polyhedron3d rendering" begin
+        b = Board("test3d_polyhedron"; xlim=(-8, 8), ylim=(-8, 8))
+        v = view3d(xlim=(-5, 5), ylim=(-5, 5), zlim=(-5, 5)) do v
+            verts = [[0, 0, 0], [3, 0, 0], [1.5, 3, 0], [1.5, 1, 3]]
+            faces = [[0, 1, 2], [0, 1, 3], [1, 2, 3], [0, 2, 3]]
+            push!(v, polyhedron3d(verts, faces; fillOpacity=0.7))
+        end
+        push!(b, v)
+        html = html_string(b)
+        @test contains(html, "create('polyhedron3d'")
+    end
 end

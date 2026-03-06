@@ -154,6 +154,57 @@ theme = load_theme("my_theme.json")
 set_theme!(theme)
 ```
 
+## 3D Element Theming
+
+The built-in themes include defaults for all 3D element types. When using `THEME_DARK` or `THEME_PUBLICATION`, 3D elements automatically pick up consistent styling:
+
+```julia
+using JSXGraph
+
+set_theme!(:dark)
+
+b = board() do
+    v = view3d([-4, -3], [8, 8], xlim=(-5, 5), ylim=(-5, 5), zlim=(-5, 5))
+    View3D(v) do
+        push!(v, point3d(1, 2, 3))                  # dark point colors
+        push!(v, functiongraph3d("Math.sin(x)*y"))   # dark surface colors
+        push!(v, sphere3d(point3d(0, 0, 0), 2.0))    # semi-transparent
+    end
+    push!(b, v)
+end
+```
+
+### 3D Element Theme Keys
+
+| Element Type | Dark Theme | Publication Theme |
+|---|---|---|
+| `point3d` | Red points (`#ff6b6b`) | Black points |
+| `line3d` | Teal (`#4ecdc4`) | Black |
+| `curve3d` | Gold (`#ffd93d`) | Black |
+| `functiongraph3d` | Gold wireframe + blue fill | Gray wireframe + light fill |
+| `parametricsurface3d` | Gold wireframe + blue fill | Gray wireframe + light fill |
+| `sphere3d` | Blue, semi-transparent | Black outline, no fill |
+| `circle3d` | Blue (`#45b7d1`) | Black |
+| `polygon3d` | Teal, semi-transparent | Black outline, no fill |
+| `plane3d` | Teal, semi-transparent | Black outline, no fill |
+| `text3d` | Light text | Serif font |
+| `vectorfield3d` | Red (`#ff6b6b`) | Black |
+| `mesh3d` | Gray wireframe | Dark gray wireframe |
+| `polyhedron3d` | Blue faces | Light gray faces |
+
+Custom themes can include any 3D element type name as a key:
+
+```julia
+my_3d_theme = Theme(
+    "functiongraph3d" => Dict{String,Any}(
+        "fillColor" => "steelblue", "fillOpacity" => 0.5,
+        "strokeColor" => "navy"
+    ),
+    "point3d" => Dict{String,Any}("size" => 4, "fillColor" => "orange"),
+)
+register_theme!(:my_3d, my_3d_theme)
+```
+
 ## API Reference
 
 ```@docs

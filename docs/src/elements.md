@@ -480,6 +480,15 @@ The `view3d` constructor accepts:
 | `functiongraph3d(f)` | Surface `z = f(x, y)` |
 | `parametricsurface3d(fx, fy, fz, u_range, v_range)` | Parametric surface |
 | `vectorfield3d(fx, fy, fz, xrange, yrange, zrange)` | 3D vector field |
+| `sphere3d(center, radius)` | 3D sphere |
+| `circle3d(center, normal, radius)` | Circle in 3D space |
+| `polygon3d(p1, p2, p3, ...)` | 3D polygon |
+| `plane3d(point, dir1, dir2)` | 3D plane |
+| `intersectionline3d(plane1, plane2)` | Intersection line of two planes |
+| `intersectioncircle3d(el1, el2)` | Intersection circle of spheres/planes |
+| `text3d(x, y, z, txt)` | Text label in 3D space |
+| `mesh3d(point, dir1, dir2, range1, range2)` | 3D wireframe mesh grid |
+| `polyhedron3d(vertices, faces)` | 3D polyhedron with shaded faces |
 
 For interactive 3D examples, see the [3D Gallery](@ref "3D Gallery").
 Full API documentation is available in the [API Reference](api.md).

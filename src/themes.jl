@@ -41,6 +41,30 @@ const THEME_DARK = Theme(
     "slider" => Dict{String,Any}("strokeColor" => "#4ecdc4", "fillColor" => "#45b7d1"),
     "axis" => Dict{String,Any}("strokeColor" => "#888888"),
     "grid" => Dict{String,Any}("strokeColor" => "#444444"),
+    # 3D elements
+    "point3d" => Dict{String,Any}("strokeColor" => "#ff6b6b", "fillColor" => "#ff6b6b"),
+    "line3d" => Dict{String,Any}("strokeColor" => "#4ecdc4", "strokeWidth" => 2),
+    "curve3d" => Dict{String,Any}("strokeColor" => "#ffd93d", "strokeWidth" => 2),
+    "functiongraph3d" => Dict{String,Any}(
+        "strokeColor" => "#ffd93d", "fillColor" => "#45b7d1", "fillOpacity" => 0.6
+    ),
+    "parametricsurface3d" => Dict{String,Any}(
+        "strokeColor" => "#ffd93d", "fillColor" => "#45b7d1", "fillOpacity" => 0.6
+    ),
+    "sphere3d" => Dict{String,Any}(
+        "strokeColor" => "#45b7d1", "fillColor" => "#45b7d1", "fillOpacity" => 0.3
+    ),
+    "circle3d" => Dict{String,Any}("strokeColor" => "#45b7d1", "strokeWidth" => 2),
+    "polygon3d" => Dict{String,Any}(
+        "strokeColor" => "#4ecdc4", "fillColor" => "#4ecdc4", "fillOpacity" => 0.15
+    ),
+    "plane3d" => Dict{String,Any}(
+        "strokeColor" => "#4ecdc4", "fillColor" => "#4ecdc4", "fillOpacity" => 0.1
+    ),
+    "text3d" => Dict{String,Any}("cssStyle" => "color: #e0e0e0"),
+    "vectorfield3d" => Dict{String,Any}("strokeColor" => "#ff6b6b"),
+    "mesh3d" => Dict{String,Any}("strokeColor" => "#888888"),
+    "polyhedron3d" => Dict{String,Any}("fillColor" => "#45b7d1", "fillOpacity" => 0.4),
 )
 
 """
@@ -66,6 +90,32 @@ const THEME_PUBLICATION = Theme(
     "text" => Dict{String,Any}("cssStyle" => "font-family: serif"),
     "axis" => Dict{String,Any}("strokeColor" => "#000000"),
     "grid" => Dict{String,Any}("strokeColor" => "#cccccc", "strokeOpacity" => 0.5),
+    # 3D elements
+    "point3d" => Dict{String,Any}(
+        "strokeColor" => "#000000", "fillColor" => "#000000", "size" => 2
+    ),
+    "line3d" => Dict{String,Any}("strokeColor" => "#000000", "strokeWidth" => 1.5),
+    "curve3d" => Dict{String,Any}("strokeColor" => "#000000", "strokeWidth" => 2),
+    "functiongraph3d" => Dict{String,Any}(
+        "strokeColor" => "#333333", "fillColor" => "#cccccc", "fillOpacity" => 0.4
+    ),
+    "parametricsurface3d" => Dict{String,Any}(
+        "strokeColor" => "#333333", "fillColor" => "#cccccc", "fillOpacity" => 0.4
+    ),
+    "sphere3d" => Dict{String,Any}(
+        "strokeColor" => "#000000", "fillColor" => "none", "fillOpacity" => 0
+    ),
+    "circle3d" => Dict{String,Any}("strokeColor" => "#000000", "strokeWidth" => 1.5),
+    "polygon3d" => Dict{String,Any}(
+        "strokeColor" => "#000000", "fillColor" => "none", "fillOpacity" => 0
+    ),
+    "plane3d" => Dict{String,Any}(
+        "strokeColor" => "#000000", "fillColor" => "none", "fillOpacity" => 0
+    ),
+    "text3d" => Dict{String,Any}("cssStyle" => "font-family: serif"),
+    "vectorfield3d" => Dict{String,Any}("strokeColor" => "#000000"),
+    "mesh3d" => Dict{String,Any}("strokeColor" => "#666666"),
+    "polyhedron3d" => Dict{String,Any}("fillColor" => "#cccccc", "fillOpacity" => 0.3),
 )
 
 """

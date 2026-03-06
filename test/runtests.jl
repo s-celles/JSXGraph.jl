@@ -3,6 +3,7 @@ using JSXGraph
 using JSXGraphRecipesBase
 using Colors
 using Tables
+using Observables
 using NodeJS_22_jll
 
 @testset "JSXGraph.jl" begin
@@ -18,6 +19,7 @@ using NodeJS_22_jll
     include("test_themes.jl")
     include("test_tables.jl")
     include("test_unitful.jl")
+    include("test_observables.jl")
     include("test_recipes.jl")
     include("test_snapshots.jl")
     include("test_svg_export.jl")

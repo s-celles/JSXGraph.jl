@@ -21,6 +21,8 @@ export slider, checkbox, input, button, glider, tapemeasure, text, image
 
 # 3D Element constructors
 export view3d, point3d, line3d, curve3d, functiongraph3d, parametricsurface3d, vectorfield3d
+export sphere3d, circle3d, polygon3d, plane3d
+export intersectionline3d, intersectioncircle3d, text3d, mesh3d, polyhedron3d
 
 # Composition and transformation elements
 export group, transformation, reflection, rotation, translation
@@ -42,6 +44,16 @@ export realize_specs
 """
 $(SIGNATURES)
 
+Unwrap a value for rendering. Returns the value unchanged by default.
+
+Package extensions (e.g. JSXGraphObservablesExt) can add methods to unwrap
+wrapper types such as `Observable` before HTML/JS generation.
+"""
+resolve_value(x) = x
+
+"""
+$(SIGNATURES)
+
 Serialize a dictionary to JSON with keys sorted alphabetically.
 Ensures deterministic output across Julia versions and platforms.
 """
@@ -52,7 +64,7 @@ function sorted_json(d::AbstractDict)
         i > 1 && write(io, ",")
         JSON.print(io, k)
         write(io, ":")
-        v = d[k]
+        v = resolve_value(d[k])
         if v isa AbstractDict
             write(io, sorted_json(v))
         else

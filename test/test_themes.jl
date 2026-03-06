@@ -255,6 +255,82 @@
         reset_theme!()
     end
 
+    @testset "Dark Theme 3D Element Defaults" begin
+        reset_theme!()
+        set_theme!(:dark)
+
+        p = point3d(1, 2, 3)
+        @test p.attributes["strokeColor"] == "#ff6b6b"
+        @test p.attributes["fillColor"] == "#ff6b6b"
+
+        l = line3d(point3d(0, 0, 0), point3d(1, 1, 1))
+        @test l.attributes["strokeColor"] == "#4ecdc4"
+        @test l.attributes["strokeWidth"] == 2
+
+        fg = functiongraph3d("x * y")
+        @test fg.attributes["strokeColor"] == "#ffd93d"
+        @test fg.attributes["fillColor"] == "#45b7d1"
+        @test fg.attributes["fillOpacity"] == 0.6
+
+        s = sphere3d(point3d(0, 0, 0), 2.0)
+        @test s.attributes["fillColor"] == "#45b7d1"
+        @test s.attributes["fillOpacity"] == 0.3
+
+        m = mesh3d([0, 0, 0], [1, 0, 0], [0, 1, 0], [-3, 3], [-3, 3])
+        @test m.attributes["strokeColor"] == "#888888"
+
+        ph = polyhedron3d([[0,0,0],[1,0,0],[0,1,0],[0,0,1]], [[0,1,2],[0,1,3],[1,2,3],[0,2,3]])
+        @test ph.attributes["fillColor"] == "#45b7d1"
+        @test ph.attributes["fillOpacity"] == 0.4
+
+        reset_theme!()
+    end
+
+    @testset "Publication Theme 3D Element Defaults" begin
+        reset_theme!()
+        set_theme!(:publication)
+
+        p = point3d(1, 2, 3)
+        @test p.attributes["strokeColor"] == "#000000"
+        @test p.attributes["fillColor"] == "#000000"
+        @test p.attributes["size"] == 2
+
+        fg = functiongraph3d("x * y")
+        @test fg.attributes["strokeColor"] == "#333333"
+        @test fg.attributes["fillColor"] == "#cccccc"
+        @test fg.attributes["fillOpacity"] == 0.4
+
+        s = sphere3d(point3d(0, 0, 0), 2.0)
+        @test s.attributes["fillColor"] == "none"
+        @test s.attributes["fillOpacity"] == 0
+
+        reset_theme!()
+    end
+
+    @testset "User Kwargs Override 3D Theme" begin
+        set_theme!(:dark)
+
+        p = point3d(1, 2, 3; color="green")
+        @test p.attributes["strokeColor"] == "green"
+
+        fg = functiongraph3d("x * y"; fillColor="red")
+        @test fg.attributes["fillColor"] == "red"
+
+        reset_theme!()
+    end
+
+    @testset "Global Theme Applied to 3D Elements" begin
+        set_theme!(:dark)
+
+        # intersectionline3d not explicitly in dark theme, uses global defaults
+        pl1 = plane3d(point3d(0, 0, 0), [1, 0, 0], [0, 1, 0])
+        pl2 = plane3d(point3d(0, 0, 0), [1, 0, 1], [0, 1, 0])
+        il = intersectionline3d(pl1, pl2)
+        @test il.attributes["strokeColor"] == "#e0e0e0"
+
+        reset_theme!()
+    end
+
     # Final cleanup
     reset_theme!()
 end

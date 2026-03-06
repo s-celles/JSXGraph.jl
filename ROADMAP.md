@@ -88,7 +88,7 @@ Legend: ✅ Done | 🔧 Partial | ⬜ Not started
 | REQ-INT-001 | Client-side interactivity (sliders, draggable points) | ✅ |
 | REQ-INT-002 | Dependent elements update in real time | ✅ |
 | REQ-INT-010 | WebSocket bidirectional communication (optional) | ⬜ |
-| REQ-INT-011 | Observables.jl live updates (optional) | ⬜ |
+| REQ-INT-011 | Observables.jl live updates (optional) | ✅ |
 | REQ-DOC-002 | Gallery with 30+ categorized examples | ✅ |
 | REQ-DOC-003 | Live interactive rendering in docs | ⬜ |
 | REQ-QA-001 | ≥ 80% code coverage in CI | ✅ (93.7%) |
@@ -116,18 +116,18 @@ Legend: ✅ Done | 🔧 Partial | ⬜ Not started
 | REQ-3D-004 | `functiongraph3d` surface z=f(x,y) | ✅ |
 | REQ-3D-005 | `parametricsurface3d` parametric surfaces | ✅ |
 | REQ-3D-006 | 3D gallery with 15+ examples | ✅ |
-| REQ-3D-010 | `sphere3d` — sphere element | ⬜ |
-| REQ-3D-011 | `circle3d` — circle in 3D space | ⬜ |
-| REQ-3D-012 | `polygon3d` — polygon in 3D space | ⬜ |
-| REQ-3D-013 | `plane3d` — plane in 3D space | ⬜ |
+| REQ-3D-010 | `sphere3d` — sphere element | ✅ |
+| REQ-3D-011 | `circle3d` — circle in 3D space | ✅ |
+| REQ-3D-012 | `polygon3d` — polygon in 3D space | ✅ |
+| REQ-3D-013 | `plane3d` — plane in 3D space | ✅ |
 | REQ-3D-014 | `vectorfield3d` — 3D vector field | ✅ |
-| REQ-3D-015 | `intersectionline3d` — intersection of surfaces | ⬜ |
-| REQ-3D-016 | `intersectioncircle3d` — intersection circle | ⬜ |
-| REQ-3D-017 | `mesh3d` — discrete mesh surface | ⬜ |
-| REQ-3D-018 | `text3d` — text positioned in 3D | ⬜ |
-| REQ-3D-019 | `polyhedron3d` / `face3d` — 3D solids | ⬜ |
-| REQ-3D-020 | 3D theming support | ⬜ |
-| REQ-3D-021 | 3D element attribute aliases | ⬜ |
+| REQ-3D-015 | `intersectionline3d` — intersection of surfaces | ✅ |
+| REQ-3D-016 | `intersectioncircle3d` — intersection circle | ✅ |
+| REQ-3D-017 | `mesh3d` — discrete mesh surface | ✅ |
+| REQ-3D-018 | `text3d` — text positioned in 3D | ✅ |
+| REQ-3D-019 | `polyhedron3d` / `face3d` — 3D solids | ✅ |
+| REQ-3D-020 | 3D theming support | ✅ |
+| REQ-3D-021 | 3D element attribute aliases | ✅ |
 
 **Phase 5 status: ~35% complete (core infrastructure + 6 constructors)**
 

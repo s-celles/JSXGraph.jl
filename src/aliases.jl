@@ -34,6 +34,13 @@ const ATTRIBUTE_ALIASES = Dict{Symbol,Tuple{Vector{String},Symbol}}(
     :label => (["name"], :full),
     # legend alias → withLabel
     :legend => (["withLabel"], :full),
+    # 3D surface-specific aliases
+    :surfacecolor => (["fillColor"], :full),
+    :surfaceopacity => (["fillOpacity"], :full),
+    :wireframecolor => (["strokeColor"], :full),
+    :wireframewidth => (["strokeWidth"], :full),
+    :meshcolor => (["meshColor"], :full),
+    :meshwidth => (["meshWidth"], :full),
 )
 
 """
