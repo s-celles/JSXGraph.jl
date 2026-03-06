@@ -15,6 +15,7 @@ using NodeJS_22_jll
     include("test_elements3d.jl")
     include("test_composition.jl")
     include("test_jsfunction.jl")
+    include("test_mathjs.jl")
     include("test_aliases.jl")
     include("test_themes.jl")
     include("test_tables.jl")

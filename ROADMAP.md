@@ -50,11 +50,11 @@ Legend: ✅ Done | 🔧 Partial | ⬜ Not started
 | REQ-API-022 | Custom themes from TOML/JSON files | ✅ |
 | REQ-JSF-001 | `@jsf` macro for Julia → JS transpilation | ✅ |
 | REQ-JSF-002 | Descriptive error on unsupported Julia constructs | ✅ |
-| REQ-JSF-003 | MathJS integration (optional) | ⬜ |
+| REQ-JSF-003 | MathJS integration (optional) | ✅ |
 | REQ-ECO-010 | `save(filename, board)` for HTML export | ✅ |
 | REQ-DOC-001 | Documenter.jl site with tutorial + API reference | ✅ |
 
-**Phase 2 status: ~90% complete** (REQ-JSF-003 optional/deferred)
+**Phase 2 status: 100% complete**
 
 ---
 
@@ -155,7 +155,7 @@ Legend: ✅ Done | 🔧 Partial | ⬜ Not started
 6. ~~Documentation gallery~~ (REQ-DOC-002/003) — 37 interactive examples ✅
 7. ~~CI coverage reporting~~ (REQ-QA-001/003) — GitHub Actions + Codecov ✅
 8. **General Registry registration** (REQ-QA-011) — make the package installable with `Pkg.add`
-9. **MathJS integration** (REQ-JSF-003) — optional math expression support
+9. ~~MathJS integration~~ (REQ-JSF-003) ✅
 10. **WebSocket communication** (REQ-INT-010) — optional bidirectional Julia↔JS
 
 ---

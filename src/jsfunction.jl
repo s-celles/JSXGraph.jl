@@ -1,5 +1,105 @@
 # Julia-to-JavaScript conversion
 
+# --- MathJS integration (REQ-JSF-003) ---
+
+"""
+Version of the MathJS library used for CDN references.
+"""
+const MATHJS_VERSION = "13.2.2"
+
+"""
+CDN URL for the MathJS library (version-pinned via jsdelivr).
+"""
+const MATHJS_CDN_JS = "https://cdn.jsdelivr.net/npm/mathjs@$(MATHJS_VERSION)/lib/browser/math.js"
+
+"""
+Global flag controlling MathJS integration.
+
+When enabled, the `@jsf` macro and `julia_to_js` function can transpile
+additional mathematical functions (e.g., `gamma`, `erf`, `factorial`) that
+require the MathJS library at runtime.
+"""
+const _MATHJS_ENABLED = Ref{Bool}(false)
+
+"""
+$(SIGNATURES)
+
+Enable MathJS integration.
+
+When enabled, `@jsf` and `julia_to_js` recognize additional mathematical
+functions (`gamma`, `erf`, `factorial`, etc.) that map to `math.*` calls
+in JavaScript. The generated HTML will automatically include the MathJS
+library from CDN.
+
+# Examples
+```julia
+enable_mathjs!()
+f = @jsf x -> gamma(x)  # now works — produces "math.gamma(x)"
+```
+"""
+function enable_mathjs!()
+    _MATHJS_ENABLED[] = true
+    return nothing
+end
+
+"""
+$(SIGNATURES)
+
+Disable MathJS integration and revert to standard `Math.*` functions only.
+"""
+function disable_mathjs!()
+    _MATHJS_ENABLED[] = false
+    return nothing
+end
+
+"""
+$(SIGNATURES)
+
+Return `true` if MathJS integration is currently enabled.
+"""
+function mathjs_enabled()::Bool
+    return _MATHJS_ENABLED[]
+end
+
+"""
+Mapping of Julia function names to MathJS `math.*` equivalents.
+
+These functions are only available when MathJS integration is enabled
+via [`enable_mathjs!`](@ref).
+"""
+const MATHJS_FUNCTIONS = Dict{Symbol,String}(
+    # Special functions
+    :gamma => "math.gamma",
+    :erf => "math.erf",
+    :factorial => "math.factorial",
+    # Combinatorics
+    :combinations => "math.combinations",
+    :permutations => "math.permutations",
+    # Number theory
+    :gcd => "math.gcd",
+    :lcm => "math.lcm",
+    :mod => "math.mod",
+    # Roots
+    :cbrt => "math.cbrt",
+    :nthroot => "math.nthRoot",
+    # Trigonometric (not in standard Math.*)
+    :sec => "math.sec",
+    :csc => "math.csc",
+    :cot => "math.cot",
+    :asec => "math.asec",
+    :acsc => "math.acsc",
+    :acot => "math.acot",
+    # Hyperbolic inverses (not in standard Math.*)
+    :asinh => "math.asinh",
+    :acosh => "math.acosh",
+    :atanh => "math.atanh",
+    # Statistics
+    :mean => "math.mean",
+    :median => "math.median",
+    :std => "math.std",
+    :variance => "math.variance",
+)
+
 """
 Mapping of Julia math function names to JavaScript `Math.*` equivalents.
 """
@@ -145,6 +245,13 @@ function _call_to_js(expr::Expr)
         return "$(js_func)($(join(args_js, ", ")))"
     end
 
+    # MathJS functions (REQ-JSF-003) — only when enabled
+    if func isa Symbol && _MATHJS_ENABLED[] && haskey(MATHJS_FUNCTIONS, func)
+        js_func = MATHJS_FUNCTIONS[func]
+        args_js = [julia_to_js(a) for a in expr.args[2:end]]
+        return "$(js_func)($(join(args_js, ", ")))"
+    end
+
     # Generic function call
     args_js = [julia_to_js(a) for a in expr.args[2:end]]
     return "$(func)($(join(args_js, ", ")))"
@@ -251,8 +358,8 @@ If the expression contains unsupported Julia constructs (e.g., `try/catch`,
 """
 macro jsf(expr)
     _validate_jsf(expr)
-    js_code = julia_to_js(expr)
-    return :(JSFunction($js_code))
+    quoted = QuoteNode(expr)
+    return :(JSFunction(julia_to_js($quoted)))
 end
 
 # --- Named JSFunctions and transitive dependency resolution (REQ-GEO-012) ---
@@ -326,10 +433,10 @@ macro named_jsf(expr)
     end
 
     _validate_jsf(lambda)
-    js_code = julia_to_js(lambda)
+    quoted = QuoteNode(lambda)
     name_str = string(name)
 
-    return :($(esc(name)) = JSFunction($js_code, $name_str, JSFunction[]))
+    return :($(esc(name)) = JSFunction(julia_to_js($quoted), $name_str, JSFunction[]))
 end
 
 # --- Transitive dependency collection ---

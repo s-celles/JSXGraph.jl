@@ -25,6 +25,7 @@ makedocs(;
         "Geometric Elements" => "elements.md",
         "Attribute Aliases" => "aliases.md",
         "Themes" => "themes.md",
+        "MathJS Integration" => "mathjs.md",
         "Recipe System" => "recipes.md",
         "Observables.jl" => "observables.md",
         "API Reference" => "api.md",

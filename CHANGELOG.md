@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 3D Elements documentation section in Geometric Elements page
 - Observables.jl integration: `Observable` values as element parents and attributes are automatically unwrapped at render time (REQ-INT-011)
 - Gallery documentation page with 37 categorized examples including slider-driven interactive demos (REQ-DOC-002, REQ-DOC-003)
+- MathJS integration: `enable_mathjs!()` / `disable_mathjs!()` to extend `@jsf` with `gamma`, `erf`, `factorial`, and 20+ additional math functions via MathJS CDN (REQ-JSF-003)
 
 ### Fixed
 

@@ -19,6 +19,9 @@ function render_assets(io::IO; mode::Symbol=:inline, css_only::Bool=false)
             print(io, "<script>\n")
             print(io, jsxgraph_js())
             print(io, "\n</script>\n")
+            if _MATHJS_ENABLED[]
+                print(io, "<script type=\"text/javascript\" src=\"$(MATHJS_CDN_JS)\"></script>\n")
+            end
         end
     elseif mode == :cdn
         print(
@@ -27,6 +30,9 @@ function render_assets(io::IO; mode::Symbol=:inline, css_only::Bool=false)
         )
         if !css_only
             print(io, "<script type=\"text/javascript\" src=\"$(JSXGRAPH_CDN_JS)\"></script>\n")
+            if _MATHJS_ENABLED[]
+                print(io, "<script type=\"text/javascript\" src=\"$(MATHJS_CDN_JS)\"></script>\n")
+            end
         end
     else
         throw(ArgumentError("asset_mode must be :inline or :cdn, got :$mode"))
@@ -173,6 +179,9 @@ function render_board_html(
             print(io, "}\n")
             print(io, "})();\n")
             print(io, "</script>\n")
+            if _MATHJS_ENABLED[]
+                print(io, "<script type=\"text/javascript\" src=\"$(MATHJS_CDN_JS)\"></script>\n")
+            end
             print(io, "<script>\n")
             render_board_js(io, board)
             print(io, "</script>\n")
@@ -181,7 +190,35 @@ function render_board_html(
             # 1. JXG globally available → use it directly
             # 2. RequireJS present (Documenter.jl) → load via require()
             # 3. Neither → create a <script> tag dynamically
-            print(io, """<script>
+            if _MATHJS_ENABLED[]
+                print(io, """<script>
+(function() {
+  var boardCode = '$(escaped_js)';
+  function runBoard() { try { eval(boardCode); } catch(ex) { console.error('JSXGraph board error:', ex); } }
+  function loadMathJS(cb) {
+    if (typeof math !== 'undefined') { cb(); return; }
+    var m = document.createElement('script');
+    m.src = '$(MATHJS_CDN_JS)';
+    m.onload = cb;
+    document.head.appendChild(m);
+  }
+  function runAll() { loadMathJS(runBoard); }
+  if (typeof JXG !== 'undefined') {
+    runAll();
+  } else if (typeof requirejs !== 'undefined' && typeof require.config === 'function') {
+    require.config({paths:{'jsxgraph':'$(JSXGRAPH_CDN_JS_MIN)'}});
+    require(['jsxgraph'], function(JXG) { window.JXG = JXG; runAll(); });
+  } else {
+    var s = document.createElement('script');
+    s.src = '$(JSXGRAPH_CDN_JS)';
+    s.onload = runAll;
+    document.head.appendChild(s);
+  }
+})();
+</script>
+""")
+            else
+                print(io, """<script>
 (function() {
   var boardCode = '$(escaped_js)';
   function runBoard() { try { eval(boardCode); } catch(ex) { console.error('JSXGraph board error:', ex); } }
@@ -199,6 +236,7 @@ function render_board_html(
 })();
 </script>
 """)
+            end
         end
     end
 end
