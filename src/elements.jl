@@ -769,3 +769,34 @@ function parametricsurface3d(fx, fy, fz, u_range, v_range; kwargs...)
     jsfz = _to_jsfunction(fz, 2; param_names=["u", "v"])
     return _create_element("parametricsurface3d", (jsfx, jsfy, jsfz, u_range, v_range), kwargs)
 end
+
+"""
+$(SIGNATURES)
+
+Create a 3D vector field from three component functions `fx(x,y,z)`, `fy(x,y,z)`, `fz(x,y,z)`.
+
+# Arguments
+- `fx`, `fy`, `fz`: component functions (Function, Expr, or String) of three variables
+- `xrange`: x sampling range as `[start, steps, end]`
+- `yrange`: y sampling range as `[start, steps, end]`
+- `zrange`: z sampling range as `[start, steps, end]`
+
+Each range specifies `[startValue, numberOfSteps, endValue]`, producing `steps + 1` vectors
+along that axis.
+
+# Example
+```julia
+vf = vectorfield3d(
+    "Math.cos(y)", "Math.sin(x)", "z",
+    [-2, 5, 2], [-2, 5, 2], [-2, 5, 2];
+    strokeColor="red", scale=0.5,
+)
+```
+"""
+function vectorfield3d(fx, fy, fz, xrange, yrange, zrange; kwargs...)
+    jsfx = _to_jsfunction(fx, 3; param_names=["x", "y", "z"])
+    jsfy = _to_jsfunction(fy, 3; param_names=["x", "y", "z"])
+    jsfz = _to_jsfunction(fz, 3; param_names=["x", "y", "z"])
+    funcs = [jsfx, jsfy, jsfz]
+    return _create_element("vectorfield3d", (funcs, xrange, yrange, zrange), kwargs)
+end

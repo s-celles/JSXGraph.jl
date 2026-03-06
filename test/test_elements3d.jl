@@ -202,6 +202,50 @@
         @test contains(html, "create('curve3d'")
     end
 
+    @testset "vectorfield3d" begin
+        vf = vectorfield3d(
+            "Math.cos(y)", "Math.sin(x)", "z",
+            [-2, 5, 2], [-2, 5, 2], [-2, 5, 2],
+        )
+        @test vf isa JSXElement
+        @test vf.type_name == "vectorfield3d"
+        @test length(vf.parents) == 4
+        @test vf.parents[1] isa AbstractVector
+        @test length(vf.parents[1]) == 3
+        @test all(f -> f isa JSFunction, vf.parents[1])
+        @test vf.parents[2] == [-2, 5, 2]
+        @test vf.parents[3] == [-2, 5, 2]
+        @test vf.parents[4] == [-2, 5, 2]
+    end
+
+    @testset "vectorfield3d uses x,y,z parameters" begin
+        vf = vectorfield3d(
+            "Math.cos(y)", "Math.sin(x)", "z",
+            [-2, 5, 2], [-2, 5, 2], [-2, 5, 2],
+        )
+        @test contains(vf.parents[1][1].code, "function(x,y,z)")
+        @test contains(vf.parents[1][1].code, "Math.cos(y)")
+        @test contains(vf.parents[1][2].code, "function(x,y,z)")
+        @test contains(vf.parents[1][2].code, "Math.sin(x)")
+        @test contains(vf.parents[1][3].code, "function(x,y,z)")
+    end
+
+    @testset "View3D with vectorfield3d rendering" begin
+        b = Board("test3d_vf"; xlim=(-8, 8), ylim=(-8, 8))
+        v = view3d(xlim=(-3, 3), ylim=(-3, 3), zlim=(-3, 3)) do v
+            push!(v, vectorfield3d(
+                "Math.cos(y)", "Math.sin(x)", "z",
+                [-2, 5, 2], [-2, 5, 2], [-2, 5, 2];
+                strokeColor="red",
+            ))
+        end
+        push!(b, v)
+        html = html_string(b)
+        @test contains(html, "create('vectorfield3d'")
+        @test contains(html, "Math.cos(y)")
+        @test contains(html, "\"strokeColor\":\"red\"")
+    end
+
     @testset "View3D with parametricsurface3d rendering" begin
         b = Board("test3d_parsurf"; xlim=(-8, 8), ylim=(-8, 8))
         v = view3d(xlim=(-5, 5), ylim=(-5, 5), zlim=(-5, 5)) do v

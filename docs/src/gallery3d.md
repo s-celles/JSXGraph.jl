@@ -228,9 +228,59 @@ end
 b
 ```
 
+## Vector Fields
+
+### 14. Basic Vector Field
+
+```@example gallery3d
+b = board("vf3d_basic", xlim=(-8, 8), ylim=(-8, 8)) do b
+    v = view3d([-6, -3], [8, 8], [[-3, 3], [-3, 3], [-3, 3]]) do v
+        push!(v, vectorfield3d(
+            "Math.cos(y)", "Math.sin(x)", "z",
+            [-2, 5, 2], [-2, 5, 2], [-2, 5, 2];
+            strokeColor="red", scale=0.5,
+        ))
+    end
+    push!(b, v)
+end
+b
+```
+
+### 15. Rotational Vector Field
+
+```@example gallery3d
+b = board("vf3d_rotation", xlim=(-8, 8), ylim=(-8, 8)) do b
+    v = view3d([-6, -3], [8, 8], [[-3, 3], [-3, 3], [-3, 3]]) do v
+        push!(v, vectorfield3d(
+            "-y", "x", "0",
+            [-2, 4, 2], [-2, 4, 2], [-1, 2, 1];
+            strokeColor="blue", scale=0.3,
+        ))
+    end
+    push!(b, v)
+end
+b
+```
+
+### 16. Divergent Vector Field
+
+```@example gallery3d
+b = board("vf3d_divergent", xlim=(-8, 8), ylim=(-8, 8)) do b
+    v = view3d([-6, -3], [8, 8], [[-3, 3], [-3, 3], [-3, 3]]) do v
+        push!(v, vectorfield3d(
+            "x", "y", "z",
+            [-2, 4, 2], [-2, 4, 2], [-2, 4, 2];
+            strokeColor="darkorange", scale=0.2,
+        ))
+    end
+    push!(b, v)
+end
+b
+```
+
 ## Combined Examples
 
-### 14. Surface with Points
+### 17. Surface with Points
 
 ```@example gallery3d
 b = board("surface_points", xlim=(-8, 8), ylim=(-8, 8)) do b
@@ -249,7 +299,7 @@ end
 b
 ```
 
-### 15. Helix with Endpoints
+### 18. Helix with Endpoints
 
 ```@example gallery3d
 b = board("helix_endpoints", xlim=(-8, 8), ylim=(-8, 8)) do b

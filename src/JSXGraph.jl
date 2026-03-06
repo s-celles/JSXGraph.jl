@@ -20,7 +20,7 @@ export tangent, normal, integral, derivative, riemannsum, slopefield, vectorfiel
 export slider, checkbox, input, button, glider, tapemeasure, text, image
 
 # 3D Element constructors
-export view3d, point3d, line3d, curve3d, functiongraph3d, parametricsurface3d
+export view3d, point3d, line3d, curve3d, functiongraph3d, parametricsurface3d, vectorfield3d
 
 # Composition and transformation elements
 export group, transformation, reflection, rotation, translation

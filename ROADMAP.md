@@ -120,7 +120,7 @@ Legend: ✅ Done | 🔧 Partial | ⬜ Not started
 | REQ-3D-011 | `circle3d` — circle in 3D space | ⬜ |
 | REQ-3D-012 | `polygon3d` — polygon in 3D space | ⬜ |
 | REQ-3D-013 | `plane3d` — plane in 3D space | ⬜ |
-| REQ-3D-014 | `vectorfield3d` — 3D vector field | ⬜ |
+| REQ-3D-014 | `vectorfield3d` — 3D vector field | ✅ |
 | REQ-3D-015 | `intersectionline3d` — intersection of surfaces | ⬜ |
 | REQ-3D-016 | `intersectioncircle3d` — intersection circle | ⬜ |
 | REQ-3D-017 | `mesh3d` — discrete mesh surface | ⬜ |

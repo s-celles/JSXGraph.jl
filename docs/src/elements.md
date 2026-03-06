@@ -479,6 +479,7 @@ The `view3d` constructor accepts:
 | `curve3d(fx, fy, fz, t_range)` | Parametric curve in 3D |
 | `functiongraph3d(f)` | Surface `z = f(x, y)` |
 | `parametricsurface3d(fx, fy, fz, u_range, v_range)` | Parametric surface |
+| `vectorfield3d(fx, fy, fz, xrange, yrange, zrange)` | 3D vector field |
 
 For interactive 3D examples, see the [3D Gallery](@ref "3D Gallery").
 Full API documentation is available in the [API Reference](api.md).
