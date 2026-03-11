@@ -23,7 +23,12 @@ running Julia process.
 
 ```julia
 using Pkg
-Pkg.add("JSXGraph")
+
+Pkg.develop("https://github.com/s-celles/JSXGraph.jl/")
+
+# or
+
+Pkg.add("JSXGraph")  # when registered in Julia General Registry
 ```
 
 ## Quick Start
